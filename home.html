@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <style>
+      body{
+        width: 100vw;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        background-color: grey;
+        display: grid;
+        grid-template-rows: 100px 50px auto 50px auto ;
+        grid-template-columns: 6fr 6fr;
+      }
+      header {
+        background-color: blue;
+        grid-column: 1 / 4;
+      }
+      #searchbtn{
+        grid-row: 3;
+        grid-column: 1;
+      }
+      #addnewbtn{
+        grid-row: 3;
+        grid-column: 2;
+      }
+      .btndiv{
+        text-align: center;
+      }
+
+      img.link{
+        border: 10px solid #cdd3e5;
+      }
+
+      img.link:hover{
+        border: 10px solid white;
+      }
+
+
+
+    </style>
+    <script>
+    </script>
+  </head>
+  <body>
+    <header>
+      <a href="home.php">
+        <img src="resources/logo.png" alt="logo">
+      </a>
+      <a href="logout.php" style="float:right;">
+        <img src="resources/logout.png" alt="logout">
+      </a>
+    </header>
+    <div id="searchbtn" class="btndiv">
+      <a class="linkbtn" href="resources/test1.png">
+        <img class="link" src="resources/search.png" alt="Search">
+      </a>
+    </div>
+    <div id="addnewbtn" class="btndiv">
+      <a class="linkbtn" href="resources/test3.doc">
+        <img class="link" src="resources/addnew.png" alt="Add New">
+      </a>
+    </div>
+
+
+  </body>
+</html>
