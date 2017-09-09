@@ -8,32 +8,40 @@
         padding: 0;
         background-color: grey;
         display: grid;
-        grid-template-rows: 100px 50px auto 50px auto ;
-        grid-template-columns: 6fr 6fr;
+        grid-template-rows: 100px 50px auto;
+        grid-template-columns: 3fr 3fr 3fr auto;
       }
       header {
         background-color: blue;
         grid-column: 1 / 4;
       }
-      #searchbtn{
-        grid-row: 3;
-        grid-column: 1;
+      nav{
+        grid-row: 2;
+        grid-column: 1 / 4;
+        display: grid;
+        grid-template-columns: auto auto auto auto;
       }
-      #addnewbtn{
-        grid-row: 3;
-        grid-column: 2;
-      }
-      .btndiv{
+
+      #infozone{
         text-align: center;
+        grid-row: 3;
+        grid-column: 1/4;
+        margin: 50px;
+      }
+      #quickTips{
+        background-color: white;
+        width: 100%;
+        Height: 300px;
+      }
+      .nav{
+        text-align: center;
+        background-color: white;
+      }
+      .nav:hover{
+        background-color: #e6e6e6;
       }
 
-      img.link{
-        border: 10px solid #cdd3e5;
-      }
 
-      img.link:hover{
-        border: 10px solid white;
-      }
 
 
 
@@ -50,16 +58,31 @@
         <img src="resources/logout.png" alt="logout">
       </a>
     </header>
-    <div id="searchbtn" class="btndiv">
-      <a class="linkbtn" href="resources/test1.png">
-        <img class="link" src="resources/search.png" alt="Search">
-      </a>
+    <nav>
+
+        <a href="search.php" class="nav">
+          <img src="resources/navsearch.png">
+        </a>
+
+        <a href="newform.php" class="nav">
+          <img src="resources/navnewform.png">
+        </a>
+
+        <a href="userinfo.php" class="nav">
+          <img src="resources/navuser.png">
+        </a>
+        <a href="help.php" class="nav">
+          <img src="resources/navhelp.png">
+        </a>
+
+    </nav>
+
+    <div id="infozone">
+      <div id="quickTips">
+        <b>Getting Started:</b> Get started by adding a new form!
+      </div>
     </div>
-    <div id="addnewbtn" class="btndiv">
-      <a class="linkbtn" href="resources/test3.doc">
-        <img class="link" src="resources/addnew.png" alt="Add New">
-      </a>
-    </div>
+
 
 
   </body>
