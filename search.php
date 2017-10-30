@@ -53,8 +53,8 @@
               $servername = "localhost";
               $username = "jupiter";
               $password = "password";
-              $dbname = "jupiter";
-              $dsn = 'mysql:host=localhost;dbname=jupiter';
+              $dbname = "jdms";
+              $dsn = 'mysql:host=localhost;dbname=jdms';
 
 
               $db = new mysqli($servername, $username, $password, $dbname);
@@ -64,7 +64,7 @@
               }
 
 
-              $sql = "SELECT * from templatetable WHERE templatenum > 100";
+              $sql = "SELECT * from template WHERE templatenum > 100";
               $result = $db->query($sql);
 
               if ($result->num_rows > 0) {
@@ -94,8 +94,8 @@
           $servername = "localhost";
           $username = "jupiter";
           $password = "password";
-          $dbname = "jupiter";
-          $dsn = 'mysql:host=localhost;dbname=jupiter';
+          $dbname = "jdms";
+          $dsn = 'mysql:host=localhost;dbname=jdms';
 
 
           $db = new mysqli($servername, $username, $password, $dbname);
@@ -105,14 +105,14 @@
           }
 
 
-          $sql = "SELECT * from templatefieldconfig WHERE templatenum = 101";
+          $sql = "SELECT * from fieldcfg WHERE templatenum = 101";
           $result = $db->query($sql);
 
           if ($result->num_rows > 0) {
             $table = '';
                while($row = $result->fetch_assoc()) {
 
-                 $table = '<tr><td>'.$row["fieldname"].'</td></tr> <tr><td> <input type="text" id="'.$row["fieldid"].'"> </td></tr>';
+                 $table = '<tr><td>'.$row["name"].'</td></tr> <tr><td> <input type="text" id="'.$row["fieldnum"].'"> </td></tr>';
 
                  echo($table);
 

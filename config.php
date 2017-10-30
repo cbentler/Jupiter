@@ -2,8 +2,8 @@
   $servername = "localhost";
   $username = "jupiter";
   $password = "password";
-  $dbname = "jupiter";
-  $dsn = 'mysql:host=localhost;dbname=jupiter';
+  $dbname = "jdms";
+  $dsn = 'mysql:host=localhost;dbname=jdms';
 
   $db = new PDO($dsn, $username, $password);
   $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

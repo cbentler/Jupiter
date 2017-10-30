@@ -54,8 +54,8 @@
                 $servername = "localhost";
                 $username = "jupiter";
                 $password = "password";
-                $dbname = "jupiter";
-                $dsn = 'mysql:host=localhost;dbname=jupiter';
+                $dbname = "jdms";
+                $dsn = 'mysql:host=localhost;dbname=jdms';
 
 
                 $db = new mysqli($servername, $username, $password, $dbname);
@@ -65,7 +65,7 @@
                 }
 
 
-                $sql = "SELECT * from templatetable WHERE templatenum > 100";
+                $sql = "SELECT * from template WHERE templatenum > 100";
                 $result = $db->query($sql);
 
                 if ($result->num_rows > 0) {
