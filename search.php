@@ -1,4 +1,30 @@
+<?php
+include('config.php');
 
+
+
+//template list query
+  $sql = $db->prepare("SELECT * from template WHERE templatenum > 100");
+  $sql->setFetchMode(PDO::FETCH_ASSOC);
+  $sql->execute();
+  $templatelisttable = '<tr><td><br><select class="templateselect" size="4" id="templatetypes">';
+  while ($row = $sql->fetch()) {
+    $templatelisttable .= '<option value="'.$row["templatenum"].'" onclick="searchfieldupdate('.$row["templatenum"].');">'.$row["templatename"].'</option>';
+  }
+  $templatelisttable .= '</td></tr>';
+//TODO Add scroll bar to template SELECT
+
+
+//search field
+//TODO replace with AJAX call triggered from record type list
+$sql = $db->prepare("SELECT * from fieldcfg WHERE templatenum = 101");
+$sql->setFetchMode(PDO::FETCH_ASSOC);
+$sql->execute();
+$searchfieldtable = '';
+while ($row = $sql->fetch()) {
+  $searchfieldtable .= '<tr><td>'.$row["name"].'</td></tr> <tr><td> <input type="text" id="'.$row["fieldnum"].'"> </td></tr>';
+}
+ ?>
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="headerCss.css">
@@ -24,17 +50,24 @@
       #searchResults{
         grid-row: 1;
         grid-column: 2;
-        background-color: purple;
+        background-color: #cdcdcd;
       }
       #middlediv{
         height: 20px;
         background-color: black;
+      }
+      .templateselect{
+        width: 100%;
       }
 
 
 
     </style>
     <script>
+    function searchfieldupdate(templatenum){
+      alert(templatenum);
+      //Make an AJAX call to the database processing file to pull back the search keys to run
+    }
     </script>
   </head>
   <body>
@@ -43,44 +76,14 @@
     ?>
     <div id="searchInfo">
       <div id="searchNav">
-        <table>
+        <table style="width: 100%;">
           <tr>
             <th>
               Form Templates
             </th>
           </tr>
               <?php
-              $servername = "localhost";
-              $username = "jupiter";
-              $password = "password";
-              $dbname = "jdms";
-              $dsn = 'mysql:host=localhost;dbname=jdms';
-
-
-              $db = new mysqli($servername, $username, $password, $dbname);
-
-              if ($db->connect_error) {
-                   die("Connection failed: " . $db->connect_error);
-              }
-
-
-              $sql = "SELECT * from template WHERE templatenum > 100";
-              $result = $db->query($sql);
-
-              if ($result->num_rows > 0) {
-                $table = '';
-                   while($row = $result->fetch_assoc()) {
-
-                     $table = '<tr><td id="template'. $row["templatenum"].'"><a href="formhandler.php">'. $row["templatename"].'</a></td></tr>';
-
-                     echo($table);
-
-                   }
-              } else {
-                   echo '<tr><td style="font-size: 30; height: 50px;"colspan="7"><b>There are no current requests!</b></td></tr>';
-              }
-
-              $db->close();
+              echo($templatelisttable);
               ?>
         </table>
         <br>
@@ -88,40 +91,9 @@
         </div>
         <br>
 
-
         <table id="fieldtable">
           <?php
-          $servername = "localhost";
-          $username = "jupiter";
-          $password = "password";
-          $dbname = "jdms";
-          $dsn = 'mysql:host=localhost;dbname=jdms';
-
-
-          $db = new mysqli($servername, $username, $password, $dbname);
-
-          if ($db->connect_error) {
-               die("Connection failed: " . $db->connect_error);
-          }
-
-
-          $sql = "SELECT * from fieldcfg WHERE templatenum = 101";
-          $result = $db->query($sql);
-
-          if ($result->num_rows > 0) {
-            $table = '';
-               while($row = $result->fetch_assoc()) {
-
-                 $table = '<tr><td>'.$row["name"].'</td></tr> <tr><td> <input type="text" id="'.$row["fieldnum"].'"> </td></tr>';
-
-                 echo($table);
-
-               }
-          } else {
-               echo '<tr><td style="font-size: 30; height: 50px;"colspan="7"><b>There are no current requests!</b></td></tr>';
-          }
-
-          $db->close();
+          echo($searchfieldtable);
           ?>
           <tr>
             <td>

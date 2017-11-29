@@ -1,6 +1,29 @@
+<?php
+include('config.php');
+
+//template list query
+  $sql = $db->prepare("SELECT * from template WHERE templatenum > 100");
+  $sql->setFetchMode(PDO::FETCH_ASSOC);
+  $sql->execute();
+  $templatelisttable = '<tr><td><br><select class="templateselect" size="4" id="templatetypes">';
+  while ($row = $sql->fetch()) {
+    $templatelisttable .= '<option value="'.$row["templatenum"].'" onclick="newrecordupdate('.$row["templatenum"].');">'.$row["templatename"].'</option>';
+  }
+  $templatelisttable .= '</td></tr>';
+//TODO Add scroll bar to template SELECT
+
+?>
 
 <html>
   <head>
+    <script src="resources/jquery-3.2.1.min.js" ></script>
+    <script>
+      function newrecordupdate(templatenum){
+        alert(templatenum);
+        //Ajax call to database file
+        //db return to create template
+      }
+    </script>
     <link rel="stylesheet" type="text/css" href="headerCss.css">
     <style>
 
@@ -32,6 +55,9 @@
         background-color: blue;
         color: white;
       }
+      .templateselect{
+        width: 100%;
+      }
 
 
       </style>
@@ -44,44 +70,14 @@
       ?>
       <div id="info">
         <div id="nav">
-          <table>
+          <table style="width:100%;">
             <tr>
               <th>
                 Form Templates
               </th>
             </tr>
                 <?php
-                $servername = "localhost";
-                $username = "jupiter";
-                $password = "password";
-                $dbname = "jdms";
-                $dsn = 'mysql:host=localhost;dbname=jdms';
-
-
-                $db = new mysqli($servername, $username, $password, $dbname);
-
-                if ($db->connect_error) {
-                     die("Connection failed: " . $db->connect_error);
-                }
-
-
-                $sql = "SELECT * from template WHERE templatenum > 100";
-                $result = $db->query($sql);
-
-                if ($result->num_rows > 0) {
-                  $table = '';
-                     while($row = $result->fetch_assoc()) {
-
-                       $table = '<tr><td id="template'. $row["templatenum"].'"><a href="formhandler.php">'. $row["templatename"].'</a></td></tr>';
-
-                       echo($table);
-
-                     }
-                } else {
-                     echo '<tr><td style="font-size: 30; height: 50px;"colspan="7"><b>There are no current requests!</b></td></tr>';
-                }
-
-                $db->close();
+                  echo($templatelisttable);
                 ?>
           </table>
         </div>
