@@ -17,6 +17,7 @@ include('config.php');
 
 //search field
 //TODO replace with AJAX call triggered from record type list
+/*
 $sql = $db->prepare("SELECT * from fieldcfg WHERE templatenum = 101");
 $sql->setFetchMode(PDO::FETCH_ASSOC);
 $sql->execute();
@@ -24,6 +25,7 @@ $searchfieldtable = '';
 while ($row = $sql->fetch()) {
   $searchfieldtable .= '<tr><td>'.$row["name"].'</td></tr> <tr><td> <input type="text" id="'.$row["fieldnum"].'"> </td></tr>';
 }
+*/
  ?>
 <html>
   <head>
@@ -63,8 +65,20 @@ while ($row = $sql->fetch()) {
 
 
     </style>
+    <script src="resources/jquery-3.2.1.min.js"></script>
     <script>
     function searchfieldupdate(templatenum){
+      $.ajax({url: 'database.php',
+        data: {'action': 'getSearchFields', 'templatenum': templatenum}
+        type: 'POST',
+        dataType: 'text',
+        sucess: function(data){
+          $(#fieldtable).html(data);
+        }
+
+      })
+
+
       alert(templatenum);
       //Make an AJAX call to the database processing file to pull back the search keys to run
     }
@@ -79,7 +93,7 @@ while ($row = $sql->fetch()) {
         <table style="width: 100%;">
           <tr>
             <th>
-              Form Templates
+              Templates
             </th>
           </tr>
               <?php

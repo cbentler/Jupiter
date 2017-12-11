@@ -73,7 +73,7 @@ include('config.php');
           <table style="width:100%;">
             <tr>
               <th>
-                Form Templates
+                Templates
               </th>
             </tr>
                 <?php
