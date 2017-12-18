@@ -69,17 +69,20 @@ while ($row = $sql->fetch()) {
     <script>
     function searchfieldupdate(templatenum){
       $.ajax({url: 'database.php',
-        data: {'action': 'getSearchFields', 'templatenum': templatenum}
+        data: {'action': 'getSearchFields', 'templatenum': templatenum},
         type: 'POST',
         dataType: 'text',
-        sucess: function(data){
-          $(#fieldtable).html(data);
-        }
+        success: function(data){
+          $('#fieldtable').html(data);
+        },
+        error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
+
+        /*function(error){console.log(error.responseText);},*/
 
       })
 
 
-      alert(templatenum);
+      //alert(templatenum);
       //Make an AJAX call to the database processing file to pull back the search keys to run
     }
     </script>
@@ -106,15 +109,6 @@ while ($row = $sql->fetch()) {
         <br>
 
         <table id="fieldtable">
-          <?php
-          echo($searchfieldtable);
-          ?>
-          <tr>
-            <td>
-              <br>
-              <input type="button" value="Search">
-            </td>
-          </tr>
         </table>
       </div>
       <div id="searchResults">
