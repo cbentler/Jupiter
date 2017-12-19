@@ -5,11 +5,11 @@ include('config.php');
   $sql = $db->prepare("SELECT * from template WHERE templatenum > 100");
   $sql->setFetchMode(PDO::FETCH_ASSOC);
   $sql->execute();
-  $templatelisttable = '<tr><td><br><select class="templateselect" size="4" id="templatetypes">';
+  $templatelisttable = '<select class="templateselect" id="templatetypes">';
   while ($row = $sql->fetch()) {
     $templatelisttable .= '<option value="'.$row["templatenum"].'" onclick="searchfieldupdate('.$row["templatenum"].');">'.$row["templatename"].'</option>';
   }
-  $templatelisttable .= '</td></tr>';
+  $templatelisttable .= '</select>'
 //TODO Add scroll bar to template SELECT
 
  ?>
@@ -21,12 +21,15 @@ include('config.php');
       var row ='';
       var tempFlag = 0;
       var fieldnum = '';
+      var templatenum = '';
 
       //Adding the default cells to a template (3x3) and Add row button
       function newTemplate(){
         if(tempFlag == 0){
+          getTemplatenum();
+          //templatenum = 106;
           fieldnum = 101;
-          $('.configTable').html('<tr><th colspan="3">Template Name:<input type="text" value="Name"/>        Header:<input type="text" value="test"/></tr>');
+          $('.configTable').html('<tr><th colspan="3">Template Name:<input type="text" value="Name"/>        Header:<input type="text" value="test"/>       ('+templatenum+')</tr>');
           var table = '';
           for(row=0; row<3; row++){
             table += '<tr>';
@@ -109,6 +112,25 @@ include('config.php');
         }
       }
 
+      function editTemplate(){
+        var templatenum = $("#templatetypes").val();
+        alert(templatenum);
+      }
+
+      function getTemplatenum(){
+        $.ajax({url: 'adminDB.php',
+          data: {'action': 'getTemplatenum'},
+          type: 'POST',
+          dataType: 'text',
+          async: false,
+          success: function(data){
+            templatenum = data;
+          },
+          error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
+
+        })
+      }
+
     </script>
     <style>
 
@@ -156,6 +178,9 @@ include('config.php');
       table, th, td{
         border: 1px solid black;
       }
+      .templateselect{
+        width: 100%;
+      }
 
     </style>
     <script src="resources/jquery-3.2.1.min.js"></script>
@@ -172,25 +197,19 @@ include('config.php');
     </div>
     <div id="searchInfo">
       <div id="searchNav">
-        <table style="width: 100%;">
-          <tr>
-            <td>
-              HEADER!
-            </td>
-          </tr>
-          <TR>
-            <td>
-              <input type="button" value="Add a new template" name="newTemplate" onclick="newTemplate();"/>
-            </td>
-          </tr>
-        </table>
+        Add New Template:<br>
+        <input type="button" value="New" name="newTemplate" onclick="newTemplate();"/>
         <br>
-        <div id="middlediv">
-        </div>
+        -or-
         <br>
-
-        <table id="fieldtable">
-        </table>
+        Select an existing template to modify
+        <br>
+        <?php
+        echo($templatelisttable);
+        ?>
+        <br>
+        <input type="button" value="Edit" name="edit" onclick="editTemplate();"/>
+        <br>
       </div>
       <div id="workSection">
         <table class="configTable">
