@@ -5,6 +5,7 @@
   grid-template-rows: 60px;
   grid-template-columns: 3fr 3fr 3fr auto;
   background-color: blue;
+  padding: 0;
 }
 header {
   background-color: blue;

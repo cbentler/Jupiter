@@ -1,8 +1,6 @@
 <?php
 include('config.php');
 
-
-
 //template list query
   $sql = $db->prepare("SELECT * from template WHERE templatenum > 100");
   $sql->setFetchMode(PDO::FETCH_ASSOC);
@@ -14,18 +12,6 @@ include('config.php');
   $templatelisttable .= '</td></tr>';
 //TODO Add scroll bar to template SELECT
 
-
-//search field
-//TODO replace with AJAX call triggered from record type list
-/*
-$sql = $db->prepare("SELECT * from fieldcfg WHERE templatenum = 101");
-$sql->setFetchMode(PDO::FETCH_ASSOC);
-$sql->execute();
-$searchfieldtable = '';
-while ($row = $sql->fetch()) {
-  $searchfieldtable .= '<tr><td>'.$row["name"].'</td></tr> <tr><td> <input type="text" id="'.$row["fieldnum"].'"> </td></tr>';
-}
-*/
  ?>
 <html>
   <head>
@@ -37,8 +23,14 @@ while ($row = $sql->fetch()) {
         padding: 0;
         background-color: grey;
       }
-
-
+      #pageLabel{
+        background-color: orange;
+        height: 50px;
+        text-align: center;
+        font-size: 30pt;
+        font-weight: bold;
+        color: white;
+      }
       #searchInfo{
         display: grid;
         grid-template-columns: 250px auto;
@@ -49,14 +41,10 @@ while ($row = $sql->fetch()) {
         grid-row: 1;
         grid-column: 1;
       }
-      #searchResults{
+      #workSection{
         grid-row: 1;
         grid-column: 2;
         background-color: #cdcdcd;
-      }
-      #middlediv{
-        height: 20px;
-        background-color: black;
       }
       .templateselect{
         width: 100%;
@@ -67,6 +55,7 @@ while ($row = $sql->fetch()) {
     </style>
     <script src="resources/jquery-3.2.1.min.js"></script>
     <script>
+    //Make an AJAX call to the database processing file to pull back the search keys to run
     function searchfieldupdate(templatenum){
       $.ajax({url: 'database.php',
         data: {'action': 'getSearchFields', 'templatenum': templatenum},
@@ -77,13 +66,7 @@ while ($row = $sql->fetch()) {
         },
         error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
 
-        /*function(error){console.log(error.responseText);},*/
-
       })
-
-
-      //alert(templatenum);
-      //Make an AJAX call to the database processing file to pull back the search keys to run
     }
     </script>
   </head>
@@ -91,6 +74,9 @@ while ($row = $sql->fetch()) {
     <?php
        include('header.html');
     ?>
+    <div id="pageLabel">
+      Search
+    </div>
     <div id="searchInfo">
       <div id="searchNav">
         <table style="width: 100%;">
@@ -111,7 +97,7 @@ while ($row = $sql->fetch()) {
         <table id="fieldtable">
         </table>
       </div>
-      <div id="searchResults">
+      <div id="workSection">
         <table>
           <tr>
             <th>

@@ -40,11 +40,19 @@ include('config.php');
       #nav{
         grid-row: 1;
         grid-column: 1;
-        background-color: #ff01cc;
+        background-color: grey;
       }
       #form{
         background-color: #ccc;
         margin: 10px;
+      }
+      #pageLabel{
+        background-color: green;
+        height: 50px;
+        text-align: center;
+        font-size: 30pt;
+        font-weight: bold;
+        color: white;
       }
       .section{
         outline-style: solid;
@@ -68,6 +76,9 @@ include('config.php');
       <?php
          include('header.html');
       ?>
+      <div id="pageLabel">
+        Add New
+      </div>
       <div id="info">
         <div id="nav">
           <table style="width:100%;">
@@ -81,7 +92,7 @@ include('config.php');
                 ?>
           </table>
         </div>
-        <div id="form">
+        <div id="workSection">
           <div class="section">
             <div class="sectionHeader">
               Section 1
