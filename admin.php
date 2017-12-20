@@ -21,59 +21,70 @@ include('config.php');
       var row ='';
       var tempFlag = 0;
       var fieldnum = '';
-      var templatenum = '';
+      var general = [];
+      var cellArray = [];
+
 
       //Adding the default cells to a template (3x3) and Add row button
       function newTemplate(){
         if(tempFlag == 0){
           getTemplatenum();
-          //templatenum = 106;
+          cfghtml = '';
           fieldnum = 101;
-          $('.configTable').html('<tr><th colspan="3">Template Name:<input type="text" value="Name"/>        Header:<input type="text" value="test"/>       ('+templatenum+')</tr>');
+          cfghtml += '<tr><th>Template Name:<input type="text" id="templateName"style="width: 90%;"/></th>';
+          cfghtml += '<th>Display Name:<input type="text" id="displayName" style="width: 90%;"/></th>';
+          cfghtml += '<th>Template Number:<input type="text" id="templateNumField" readonly style="width: 90%;"/></th></tr>';
+          $('.configTable').html(cfghtml);
           var table = '';
           for(row=0; row<3; row++){
             table += '<tr>';
             for(j=0; j<3; j++){
-              table += '<td id='+row+'_'+j+' class="configCell" onclick="add(this);"></td>';
+              table += '<td id='+row+'_'+j+' class="configCell" ><div class="overlay" onclick="add(this);">Click To Add Field</div></td>';
             }
           }
           table += '</tr>';
           $('.configTable').append(table);
           $('#workSection').append('<br><input type="button" value="Add New Row" onclick="newRow();"/>');
           addSave();
+          tempFlag = 1;
         }
         else{
         }
       }
 
-      //Add function executes on click of template cells
-      function add(cell){
+      //Add function executes on click of template cells.  Adds control config
+      function add(overlay){
+        var cell = $(overlay).closest("td");
         if($(cell).hasClass("active")){
         }else{
-          var id=cell.id;
+          //alert("add function");
+          var id = $(cell).attr('id');
+          alert(id);
           var options = '';
+          var html = '';
           $(cell).toggleClass("active");
           $(cell).toggleClass("configCell");
           options = '<option value="text">Text</option><option value="date">Date</option><option value="email">Email</option>';
-          $(cell).html('Label:<input type="text" class="label">('+fieldnum+')<br>Field Type:<select class="dropdown">'+options+'</select><br>Search?<input type="checkbox" value="Search"><br><input type="button" value="X" id="r'+id+'" style="background-color: red" onclick="remove(this);"/>');
+          html += 'Label:<input type="text" id="label_'+fieldnum+'" class="label db"> ('+fieldnum+')<br>Field Type:<select id="fieldType_'+fieldnum+'" class="fieldType db">'+options+'</select><br>Search?'
+          html += '<input type="checkbox" class="checkbox" value="Search" id="search_'+fieldnum+'" onclick="updateSearch(this.id);"><br>Remove Field: <input type="button" value="X" id="r'+fieldnum+'" style="background-color: red" onclick="remove(this);"/>';
+          html += '<br><input type="text" id="hiddenFieldnum" value="'+fieldnum+'" class="db" hidden/><input type="text" id="hiddenID" value="'+id+'" class="db" hidden/>';
+          html += '<input type="text" id="hidden_search_'+fieldnum+'" value="0" class="db" hidden/>';
+          $(cell).html(html);
           fieldnum++;
 
         }
       }
 
       //remove cell
-      function remove(cell){
+      function remove(deleteBtn){
         //TODO figure out delete
-
-
-        alert(cell.id);
-        var cellid = cell.id;
-        var fullCell = cellid.replace('r','');
-        alert(fullCell);
-        //document.getElementByID(fullCell);
-        $('#'+fullCell)[0].html("");
-        $('#'+fullCell).toggleClass("active");
-        $('#'+fullCell).toggleClass("configCell");
+        if(window.confirm("Are you sure you want to remove this field?")){
+          var cell = $(deleteBtn).closest("td");
+          $(cell).empty();
+          $(cell).toggleClass("active");
+          $(cell).toggleClass("configCell");
+          $(cell).html('<div class="overlay" onclick="add(this);">Click To Add Field</div>');
+        }
       }
 
 
@@ -81,15 +92,25 @@ include('config.php');
       function newRow(){
         var table = '<tr>';
         for(j=0; j<3; j++){
-          table += '<td id="'+row+'_'+j+'" class="configCell" onclick="add(this);"></td>';
+          table += '<td id="'+row+'_'+j+'" class="configCell"><div class="overlay" onclick="add(this);">Click To Add Field</div></td>';
         }
         row ++;
         $('.configTable').append(table);
       }
       //Adds save button
       function addSave(){
-        $('#workSection').prepend('<input type="button" value="Save"/>');
-        tempFlag = 1;
+        $('#workSection').prepend('<input type="button" value="Save" onclick="saveConfig();"/>');
+
+      }
+
+      //updates the hidden txt field with the search values
+      function updateSearch(id){
+        var field = "hidden_"+id;
+        if($("#"+id).is(':checked')){
+          $("#"+field).val("1");
+        }else{
+          $("#"+field).val("0");
+        }
       }
 
       //save Function
@@ -98,39 +119,84 @@ include('config.php');
         if(tempFlag == 0){
           console.log("Error processing.  TempFlag ="+tempFlag)
         }else if (tempFlag == 1){
+          console.log(tempFlag+ "- New");
           //new form
-          //TODO: Ajax call to database file with new Configuration
-
-          //get element values
+          /*
+          //prepare and send general information
+          tempGeneral();
+          $.ajax({url: 'adminDB.php',
+            data: {'action': 'createNewTemplate',
+            'data': JSON.stringify(general)},
+            type: 'POST',
+            dataType: 'text',
+            success: function(data){
+              location.reload(true);
+            },
+            error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
+          })
+*/
+          //get element values - cells of fields
+          getFieldVals();
+          //alert(cellArray);
 
           //prepare data for db file - stringify array for json
 
           //Ajax call to db file
 
         }else if (tempFlag == 2){
-          alert("Test");
+          console.log(tempFlag + "- Edit");
         }
       }
 
+      //opens a template to edit
       function editTemplate(){
+        tempFlag = 2;
         var templatenum = $("#templatetypes").val();
         alert(templatenum);
       }
 
+      //Gets template num for the form from database
       function getTemplatenum(){
         $.ajax({url: 'adminDB.php',
           data: {'action': 'getTemplatenum'},
           type: 'POST',
           dataType: 'text',
-          async: false,
           success: function(data){
-            templatenum = data;
+            $("#templateNumField").val(data);
+            //templatenum = data;
           },
           error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
 
         })
       }
 
+      //updates the file share location in the database for the upload function
+      function updateFileLocation(){
+        var loc = $("#fileUpload").val();
+        alert(loc);
+      }
+
+      //Prepares general template information (name, display name, num)
+      function tempGeneral(){
+        general = [];
+        var name = $("#templateName").val();
+        var display = $("#displayName").val();
+        var num = $("#templateNumField").val();
+        general.push(name, display, num);
+      }
+
+      function getFieldVals(){
+        var cellArray = {};
+        var testVal = '';
+        //testVal = $("#search_101").val();
+        //alert(testVal);
+
+        $(".active").each(function(index){
+          $(this).children(".db").each(function(index2){
+            console.log(index2 + "-" + $(this).val());
+          });
+        })
+      }
     </script>
     <style>
 
@@ -170,10 +236,12 @@ include('config.php');
         width: 33%;
       }
       .configCell:hover{
-        opacity: 0.2;
+        background-color: light grey;
+      }
+      .configCell:hover .overlay {
+        opacity: 1;
       }
       .active:hover{
-
       }
       table, th, td{
         border: 1px solid black;
@@ -181,6 +249,17 @@ include('config.php');
       .templateselect{
         width: 100%;
       }
+
+      .overlay {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        text-align: center;
+        background-color: #cdcdcd;
+      }
+
+
 
     </style>
     <script src="resources/jquery-3.2.1.min.js"></script>
@@ -210,6 +289,15 @@ include('config.php');
         <br>
         <input type="button" value="Edit" name="edit" onclick="editTemplate();"/>
         <br>
+        <br>
+        -----------------------------------------
+        <br>
+        File upload location:
+        <br>
+        <input type="text" id="fileUpload"/>
+        <br>
+        <input type="button" value="Update Location" id="updateLocBtn" onclick="updateFileLocation();"/>
+
       </div>
       <div id="workSection">
         <table class="configTable">
