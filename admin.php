@@ -59,15 +59,14 @@ include('config.php');
         }else{
           //alert("add function");
           var id = $(cell).attr('id');
-          alert(id);
           var options = '';
           var html = '';
           $(cell).toggleClass("active");
           $(cell).toggleClass("configCell");
           options = '<option value="text">Text</option><option value="date">Date</option><option value="email">Email</option>';
-          html += 'Label:<input type="text" id="label_'+fieldnum+'" class="label db"> ('+fieldnum+')<br>Field Type:<select id="fieldType_'+fieldnum+'" class="fieldType db">'+options+'</select><br>Search?'
+          html += '<input type="text" id="hiddenFieldnum" value="'+fieldnum+'" class="db" hidden/>Label:<input type="text" id="label_'+fieldnum+'" class="label db"> ('+fieldnum+')<br>Field Type:<select id="fieldType_'+fieldnum+'" class="fieldType db">'+options+'</select><br>Search?'
           html += '<input type="checkbox" class="checkbox" value="Search" id="search_'+fieldnum+'" onclick="updateSearch(this.id);"><br>Remove Field: <input type="button" value="X" id="r'+fieldnum+'" style="background-color: red" onclick="remove(this);"/>';
-          html += '<br><input type="text" id="hiddenFieldnum" value="'+fieldnum+'" class="db" hidden/><input type="text" id="hiddenID" value="'+id+'" class="db" hidden/>';
+          html += '<br><input type="text" id="hiddenID" value="'+id+'" class="db" hidden/>';
           html += '<input type="text" id="hidden_search_'+fieldnum+'" value="0" class="db" hidden/>';
           $(cell).html(html);
           fieldnum++;
@@ -121,7 +120,7 @@ include('config.php');
         }else if (tempFlag == 1){
           console.log(tempFlag+ "- New");
           //new form
-          /*
+
           //prepare and send general information
           tempGeneral();
           $.ajax({url: 'adminDB.php',
@@ -130,18 +129,27 @@ include('config.php');
             type: 'POST',
             dataType: 'text',
             success: function(data){
-              location.reload(true);
+              //location.reload(true);
             },
             error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
           })
-*/
+
           //get element values - cells of fields
           getFieldVals();
-          //alert(cellArray);
-
-          //prepare data for db file - stringify array for json
-
+          var templatenum = $("#templateNumField").val();
           //Ajax call to db file
+
+          $.ajax({url: 'updateFormFieldsDB.php',
+            data: {'templatenum': templatenum,
+              'data': JSON.stringify(cellArray),
+              'tempFlag': tempFlag},
+            type: 'POST',
+            dataType: 'text',
+            success: function(data){
+                console.log("success php:"+data);
+              },
+            error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
+              })
 
         }else if (tempFlag == 2){
           console.log(tempFlag + "- Edit");
@@ -185,17 +193,19 @@ include('config.php');
         general.push(name, display, num);
       }
 
+      //gets items configured for each cell
       function getFieldVals(){
-        var cellArray = {};
-        var testVal = '';
-        //testVal = $("#search_101").val();
-        //alert(testVal);
-
+        cellArray = [];
+        //0 - ID, 1 - Name, 2 - Type, 3 - coordinate, 4 - Search
         $(".active").each(function(index){
+          fieldArray = [];
           $(this).children(".db").each(function(index2){
-            console.log(index2 + "-" + $(this).val());
+            fieldArray.push($(this).val());
+            //console.log(index2 + "-" + $(this).val());
           });
+          cellArray.push(fieldArray);
         })
+        //console.log(cellArray);
       }
     </script>
     <style>
