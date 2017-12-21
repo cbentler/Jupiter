@@ -7,7 +7,7 @@ if (isset($_POST['data'])) {
   $templatenum = $_POST['templatenum'];
   $tempflag = $_POST['tempFlag'];
 
-  $dataArr = json_decode($data, true);
+  $dataArr = json_decode($data);
 
 
   if($tempflag == 1){
@@ -29,17 +29,17 @@ if (isset($_POST['data'])) {
   $sqli->setFetchMode(PDO::FETCH_ASSOC);
   $sqli->execute();
 
-  //set update idList
-  $idList = '';
-  for ($i = 0; $i < count($dataArr); ++$i){
-    $idList .= $dataArr[$i][0];
-  }
+
   //delete existing rows for templatenum
-  $sqld = $db->prepare("DELETE FROM jdms.fieldcfg WHERE templatenum = :templatenum and id in (:idList);");
-  $sqld->bindParam(':idList', $idList);
-  $sqld->bindParam(':templatenum', $templatenum);
-  $sqld->setFetchMode(PDO::FETCH_ASSOC);
-  $sqld->execute();
+  for($i = 0; $i < count($dataArr); ++$i){
+    $sqld = $db->prepare("DELETE FROM jdms.fieldcfg WHERE templatenum = :templatenum and id = :id;");
+    $sqld->bindParam(':id', $dataArr[$i][0]);
+    $sqld->bindParam(':templatenum', $templatenum);
+    $sqld->setFetchMode(PDO::FETCH_ASSOC);
+    $sqld->execute();
+  }
+
+
 
 
   //add new rows
@@ -54,6 +54,8 @@ if (isset($_POST['data'])) {
     $sql2->bindParam(':search', $dataArr[$i][4]);
     $sql2->setFetchMode(PDO::FETCH_ASSOC);
     $sql2->execute();
+
+
   }
 
 
