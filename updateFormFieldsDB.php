@@ -13,11 +13,11 @@ if (isset($_POST['data'])) {
   if($tempflag == 1){
     //create new table for template
     $sqlstmt = '';
-    $sqlstmt .= "CREATE TABLE jdms.template".$templatenum." (valnum".$templatenum." INT NOT NULL AUTO_INCREMENT,";
+    $sqlstmt .= "CREATE TABLE jdms.template".$templatenum." (recordnum INT NOT NULL AUTO_INCREMENT,";
     for ($i = 0; $i < count($dataArr); ++$i){
       $sqlstmt .= "f".$dataArr[$i][0]." VARCHAR(200) NULL, ";
     }
-    $sqlstmt .= "PRIMARY KEY (valnum".$templatenum."));";
+    $sqlstmt .= "PRIMARY KEY (recordnum));";
     $sql = $db->prepare($sqlstmt);
     $sql->setFetchMode(PDO::FETCH_ASSOC);
     $sql->execute();

@@ -67,7 +67,7 @@ include('config.php');
           var html = '';
           $(cell).toggleClass("active");
           $(cell).toggleClass("configCell");
-          options = '<option value="text">Text</option><option value="date">Date</option><option value="email">Email</option>';
+          options = '<option value="text">Text</option><option value="date">Date</option>';
           html += '<input type="text" id="hiddenFieldnum_'+fieldnum+'" value="'+fieldnum+'" class="db" hidden/>Label:<input type="text" id="label_'+fieldnum+'" class="label db"> ('+fieldnum+')<br>Field Type:<select id="fieldType_'+fieldnum+'" class="fieldType db">'+options+'</select><br>Search?'
           html += '<input type="checkbox" class="checkbox" value="Search" id="search_'+fieldnum+'" onclick="updateSearch(this.id);"><br>Remove Field: <input type="button" value="X" id="r'+fieldnum+'" style="background-color: red" onclick="remove(this);"/>';
           html += '<br><input type="text" id="hiddenID" value="'+id+'" class="db" hidden/>';
@@ -357,7 +357,7 @@ include('config.php');
           cellNum = tableData[i][1];
           $("#"+cell).toggleClass("active");
           $("#"+cell).toggleClass("configCell");
-          options = '<option value="text">Text</option><option value="date">Date</option><option value="email">Email</option>';
+          options = '<option value="text">Text</option><option value="date">Date</option>';
           html += '<input type="text" id="hiddenFieldnum_'+cellNum+'" value="'+cellNum+'" class="db" hidden/>Label:<input type="text" id="label_'+cellNum+'" class="label db"> ('+cellNum+')<br>Field Type:<select id="fieldType_'+cellNum+'" class="fieldType db">'+options+'</select><br>Search?'
           html += '<input type="checkbox" class="checkbox" value="Search" id="search_'+cellNum+'" onclick="updateSearch(this.id);"><br>Remove Field: <input type="button" value="X" id="r'+cellNum+'" style="background-color: red" onclick="remove(this);"/>';
           html += '<br><input type="text" id="hiddenID" value="'+cell+'" class="db" hidden/>';
@@ -429,7 +429,7 @@ include('config.php');
       }
       .active:hover{
       }
-      table, th, td{
+      .configTable table, th, td{
         border: 1px solid black;
       }
       .templateselect{

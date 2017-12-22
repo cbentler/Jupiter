@@ -17,13 +17,18 @@ include('config.php');
 <html>
   <head>
     <script src="resources/jquery-3.2.1.min.js" ></script>
+    <link rel="stylesheet" href="ui/jquery-ui.min.css">
+    <script src="ui/external/jquery/jquery.js"></script>
+    <script src="ui/jquery-ui.min.js"></script>
     <script>
       function newRecord(){
         var templatenum = $("#templatetypes").val();
+        if(templatenum){
+
         console.log(templatenum);
 
 
-        //Ajax call to database file to get template info
+        //Ajax call to database file to get template info - info tab
         $.ajax({
             url: 'getTemplateInfoDB.php',
             data: {'templatenum': templatenum},
@@ -36,13 +41,31 @@ include('config.php');
             },
             error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
           });
+
+        }else{
+          alert("Please select a template.");
+        }
         }
 
         function recallNewRecord(tableData){
-          var recordhtml = '';
+          //sets template num for this form to be submitted
+          var submitNum = tableData[0];
+          console.log(submitNum);
+
+          //all form html
+          var fullhtml = '<form action="submitNewFormDB.php" method="post" enctype="multipart/form-data"><input type="submit" class="saveBtn" value="Save"/><input type="text" name="submitNum" id="submitNum"/>';
+          fullhtml += '<div id="tabs"><ul><li><a href="#infoTab">Info</a></li><li><a href="#notesTab">Notes</a></li><li><a href="#uploadTab">Documents</a></li></ul>'
+          //info tab
+          var recordhtml = '<div id="infoTab">';
+          //notes tab
+          var noteshtml = '<div id="notesTab">';
+          //upload tab
+          var uploadhtml = '<div id="uploadTab">';
+
           var tableRowCount;
+
           //create shell
-          recordhtml = '<form action="submitNewFormDB.php"><input type="submit" class="saveBtn" value="Save"/><table class="recordtable">';
+          recordhtml += '<table class="recordtable">';
           recordhtml += '<tr><th colspan="3"><input type="text" id="header" value="'+tableData[2]+'"/></th></tr>';
           //recall Table
           if(tableData[4] < 3){
@@ -58,11 +81,40 @@ include('config.php');
             }
           }
           recordhtml += '</tr>';
+
           //complete html
-            recordhtml += '</table></form>';
-          //set html to section
-          $("#infoTab").html(recordhtml);
-          //populate internals
+          recordhtml += '</table></div>';
+
+
+
+
+          //notes Tab
+          noteshtml += '<div style="text-align: center;">Enter notes below.<br><textarea name="notearea" class="notearea" rows="36" cols="100"></textarea></div>';
+          //close tab
+          noteshtml += '</div>';
+
+          //upload Tab
+          uploadhtml += 'Enter File Description: <input type="text" name="description" id="description"/> <br><input type="file" name="file" id="file"/>';
+          //close tab
+          uploadhtml += '</div>';
+
+
+
+          //sets form html to work section - final step
+          fullhtml += recordhtml + noteshtml + uploadhtml;
+          fullhtml += '</div></form>';
+          $("#workSection").html(fullhtml);
+
+          //populate table data internals
+          populateInternals(tableData);
+          $("#submitNum").val(submitNum);
+          console.log(fullhtml);
+          $("#tabs").tabs();
+          $( "#infoTab" ).click();
+        }
+
+
+        function populateInternals(tableData){
           for(i=5; i<tableData.length; i++){
             html = '';
             cell = tableData[i][3];
@@ -70,12 +122,23 @@ include('config.php');
             label = tableData[i][0];
             type = tableData[i][2];
 
-            html += '<input type="text" id="hiddenFieldnum_'+cellNum+'" value="'+cellNum+'" class="db" hidden/><input type="text" id="label_'+cellNum+'" class="label" value="'+label+'"><br>';
-            html += '<input class="formInput" type="'+type+'" />';
+            html += '<input type="text" id="hiddenFieldnum_'+cellNum+'" value="'+cellNum+'" class="db" hidden/>';
+            html += '<input type="text" id="label_'+cellNum+'" class="label" value="'+label+'"><br>';
+            html += '<input class="formInput" type="'+type+'" name="input_f'+cellNum+'" id="input_f'+cellNum+'" />';
             html += '<br><input type="text" id="hiddenID" value="'+cell+'" class="db" hidden/>';
-            html += '<input type="text" id="hidden_search_'+cellNum+'" value="0" class="db" hidden/>';
             $("#"+cell).html(html);
+
           }
+        }
+
+
+
+        function onLoad(){
+          $(document).ready(function () {
+
+            $("#tabs").tabs();
+
+          });
         }
 
     </script>
@@ -131,13 +194,19 @@ include('config.php');
         width: 33%;
         border: solid 1px black;
       }
+      .notearea{
+        background-color: #e6e6ff;
+      }
+      .saveBtn{
+        font-size: 15pt;
+      }
 
 
       </style>
       <script>
       </script>
     </head>
-    <body>
+    <body onload="onLoad()">
       <?php
          include('header.html');
       ?>
