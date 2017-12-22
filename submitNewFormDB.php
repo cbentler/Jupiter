@@ -25,9 +25,12 @@ if (isset($_POST['submitNum'])) {
   $trimcol = "(".rtrim($columns,", ").")";
   $trimval = "(".rtrim($values,", ").")";
 
+  $stmt = '';
+  $stmt .= 'INSERT INTO jdms.template'.$templatenum.' :col VALUES :value;';
+
 try{
   //Insert data to template[num] table
-  $sqli = $db->prepare("INSERT INTO jdms.template".$templatenum." :col VALUES :value;");
+  $sqli = $db->prepare($stmt);
   $sqli->bindParam(':col', $trimcol);
   $sqli->bindParam(':value', $trimval);
   $sqli->setFetchMode(PDO::FETCH_ASSOC);

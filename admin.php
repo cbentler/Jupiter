@@ -358,7 +358,7 @@ include('config.php');
           $("#"+cell).toggleClass("active");
           $("#"+cell).toggleClass("configCell");
           options = '<option value="text">Text</option><option value="date">Date</option>';
-          html += '<input type="text" id="hiddenFieldnum_'+cellNum+'" value="'+cellNum+'" class="db" hidden/>Label:<input type="text" id="label_'+cellNum+'" class="label db"> ('+cellNum+')<br>Field Type:<select id="fieldType_'+cellNum+'" class="fieldType db">'+options+'</select><br>Search?'
+          html += '<input type="text" id="hiddenFieldnum_'+cellNum+'" value="'+cellNum+'" class="db" hidden/>Label:<input type="text" id="label_'+cellNum+'" class="label db"> ('+cellNum+')<br>Field Type:<select id="fieldType_'+cellNum+'" class="fieldType db" disabled>'+options+'</select><br>Search?'
           html += '<input type="checkbox" class="checkbox" value="Search" id="search_'+cellNum+'" onclick="updateSearch(this.id);"><br>Remove Field: <input type="button" value="X" id="r'+cellNum+'" style="background-color: red" onclick="remove(this);"/>';
           html += '<br><input type="text" id="hiddenID" value="'+cell+'" class="db" hidden/>';
           html += '<input type="text" id="hidden_search_'+cellNum+'" value="0" class="db" hidden/>';
