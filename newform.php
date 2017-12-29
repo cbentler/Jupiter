@@ -66,7 +66,7 @@ include('config.php');
 
           //create shell
           recordhtml += '<table class="recordtable">';
-          recordhtml += '<tr><th colspan="3"><input type="text" id="header" value="'+tableData[2]+'"/></th></tr>';
+          recordhtml += '<tr><th colspan="3">'+tableData[2]+'</th></tr>';
           //recall Table
           if(tableData[4] < 3){
             tableRowCount = 3;
@@ -89,7 +89,7 @@ include('config.php');
 
 
           //notes Tab
-          noteshtml += '<div style="text-align: center;">Enter notes below.<br><textarea name="notearea" class="notearea" rows="36" cols="100"></textarea></div>';
+          noteshtml += '<div style="text-align: center;">Enter notes below.<br><textarea name="notearea" class="notearea"></textarea></div>';
           //close tab
           noteshtml += '</div>';
 
@@ -108,7 +108,7 @@ include('config.php');
           //populate table data internals
           populateInternals(tableData);
           $("#submitNum").val(submitNum);
-          console.log(fullhtml);
+          //console.log(fullhtml);
           $("#tabs").tabs();
           $( "#infoTab" ).click();
         }
@@ -123,7 +123,8 @@ include('config.php');
             type = tableData[i][2];
 
             html += '<input type="text" id="hiddenFieldnum_'+cellNum+'" value="'+cellNum+'" class="db" hidden/>';
-            html += '<input type="text" id="label_'+cellNum+'" class="label" value="'+label+'"><br>';
+            html += '<p class="label">'+label+'</p>';
+            //html += '<input type="text" id="label_'+cellNum+'" class="label" value="'+label+'"><br>';
             html += '<input class="formInput" type="'+type+'" name="input_f'+cellNum+'" id="input_f'+cellNum+'" />';
             html += '<br><input type="text" id="hiddenID" value="'+cell+'" class="db" hidden/>';
             $("#"+cell).html(html);
@@ -148,7 +149,7 @@ include('config.php');
       body{
         margin: 0;
         padding: 0;
-        background-color: #ccc;
+        background-color: grey;
       }
       #info{
         display: grid;
@@ -165,40 +166,55 @@ include('config.php');
         margin: 10px;
       }
       #pageLabel{
-        background-color: green;
+        background-color: purple;
+        /*green*/
         height: 50px;
         text-align: center;
         font-size: 30pt;
         font-weight: bold;
         color: white;
       }
-      .section{
-        outline-style: solid;
-        outline-width: thin;
-        outline-color: blue;
-      }
-      .sectionHeader{
-        background-color: blue;
-        color: white;
+      #workSection{
+        background-color: #ccc;
       }
       .templateselect{
         width: 100%;
       }
       .recordtable{
         width: 100%;
+        border-collapse: collapse;
       }
-      .recordtable th{
+      .recordtable th {
         text-align: left;
+        background-color: #002C64;
+        color: white;
+        font-size: 16pt;
       }
       .recordtable td{
         width: 33%;
-        border: solid 1px black;
+        /*border: solid 1px black;*/
+        padding-left: 10px;
+        padding-right: 10px;
+        height: 70px;
+        background-color: #ccc;
       }
       .notearea{
         background-color: #e6e6ff;
+        /*e6e6ff*/
+        width: 100%;
+        height: 250px;
+        font-size: 4pt;
       }
       .saveBtn{
         font-size: 15pt;
+      }
+      .label{
+        margin: 0;
+        padding: 0;
+      }
+      .formInput{
+        width: 100%;
+        background-color: white;
       }
 
 
@@ -211,7 +227,7 @@ include('config.php');
          include('header.html');
       ?>
       <div id="pageLabel">
-        Add New
+        New Record
       </div>
       <div id="info">
         <div id="nav">

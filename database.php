@@ -25,7 +25,7 @@ function getSearchFields($templatenum){
 
   include('config.php');
 
-  $sql = $db->prepare("SELECT * from fieldcfg WHERE templatenum = $templatenum and search = 1");
+  $sql = $db->prepare("SELECT * from fieldcfg WHERE templatenum = $templatenum and active = 1 and search = 1");
   $sql->setFetchMode(PDO::FETCH_ASSOC);
   $sql->execute();
   $searchfieldtable = '';
