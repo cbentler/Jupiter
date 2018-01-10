@@ -5,71 +5,71 @@ include('config.php');
 if (isset($_POST['submitNum'])) {
   $templatenum = $_POST['submitNum'];
 
-  $columns = '';
-  $values = '';
+  $columns = [];
+  $values = [];
+  $toBind = [];
   $recordnum = '';
+  $saveBool = "";
 
   foreach($_POST as $k => $v) {
-    $colName = '';
-    if(strpos($k, 'input_') === 0) {
+    if(strpos($k, 'f') === 0) {
       if("" == trim($v)){
-
       }else{
-        $colName = str_replace("input_", "", $k);
-        $columns .= $colName.",";
-        $values .= trim($v).",";
+        $params = [];
+        array_push($values, trim($v));
+        array_push($columns, $k);
+        $param = ":" . $k;
+        $params[] = $param;
+        $toBind[$param] = $v;
       }
     }
   }
 
-  $trimcol = "(".rtrim($columns,", ").")";
-  $trimval = "(".rtrim($values,", ").")";
+  if(!empty($values)){
+    //If the values array is not empty, execute insert statement
+    $trimval = "('".implode("', '",$values)."')";
+    $trimcol = "(".implode(", ",$columns).")";
 
-  $stmt = '';
-  $stmt .= 'INSERT INTO jdms.template'.$templatenum.' :col VALUES :value;';
+    $stmt = '';
+    $stmt .= 'INSERT INTO jdms.template'.$templatenum.' '.$trimcol.' VALUES '.$trimval.';';
 
-try{
-  //Insert data to template[num] table
-  $sqli = $db->prepare($stmt);
-  $sqli->bindParam(':col', $trimcol);
-  $sqli->bindParam(':value', $trimval);
-  $sqli->setFetchMode(PDO::FETCH_ASSOC);
-  $sqli->execute();
-  $recordnum = $db->lastInsertID();
+  try{
+    //Insert data to template[num] table
+    $sqli = $db->prepare($stmt);
+    foreach($toBind as $param => $val){
+      $sqli->bindValue($param, $val);
+    }
+    $sqli->setFetchMode(PDO::FETCH_ASSOC);
+    $sqli->execute();
 
+    //get recordnum
+    $recordnum = $db->lastInsertID();
+    //Insert note fields - notearea
+    $notes = $_POST['notearea'];
 
-  var_dump($_POST);
-  echo($recordnum);
+    $sql2 = $db->prepare("INSERT INTO jdms.notes (recordnum, note) VALUES (:recordnum, :notes)");
+    $sql2->bindParam(':recordnum', $recordnum, PDO::PARAM_STR);
+    $sql2->bindParam(':notes', $notes, PDO::PARAM_STR);
+    $sql2->setFetchMode(PDO::FETCH_ASSOC);
+    $sql2->execute();
 
-}catch(PDOException $e){
-  echo 'Connection failed: ' . $e->getMessage();
-  echo("error");
-  echo("recnum:".$recordnum);
-  echo("cols~".$trimcol);
-  echo("values~".$trimval);
+    $saveBool = "true";
 
-  echo("INSERT INTO jdms.template".$templatenum." ".$trimcol." VALUES ".$trimval.";");
-}
+    //var_dump($_POST);
 
-//get recordnum
+    }catch(PDOException $e){
+      echo 'Connection failed: ' . $e->getMessage();
+      $saveBool = "false";
+    }
 
+  }
 
-/*
-//Insert note fields - notearea
-$notes = $_POST['notearea'];
+  header('Location: newform.php?save='.$saveBool);
+  die();
 
-
-$sqli = $db->prepare("INSERT INTO jdms.notes ");
-//$sqli->bindParam(':column', $trimcol, PDO::PARAM_STR);
-$sqli->bindParam(':value', $trimval, PDO::PARAM_STR);
-$sqli->setFetchMode(PDO::FETCH_ASSOC);
-$sqli->execute();
-
-//Insert file - description and file
-
-*/
 }else{
   echo("An Error Occurred");
+  die();
 }
 
 

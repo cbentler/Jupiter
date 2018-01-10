@@ -10,6 +10,7 @@
         margin: 0;
         padding: 0;
         background-color: grey;
+        font-family: arial;
       }
 
       #landingPage{
@@ -22,7 +23,7 @@
       #pageLabel{
         background-color: purple;
         height: 50px;
-        text-align: center;
+        text-align: right;
         font-size: 30pt;
         font-weight: bold;
         color: white;

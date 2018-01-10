@@ -10,6 +10,7 @@
         margin: 0;
         padding: 0;
         background-color: grey;
+        font-family: arial;
       }
 
 
@@ -20,9 +21,9 @@
         text-align: center;
       }
       #pageLabel{
-        background-color: purple;
+        background-color: #595959;
         height: 50px;
-        text-align: center;
+        text-align: right;
         font-size: 30pt;
         font-weight: bold;
         color: white;
@@ -39,7 +40,7 @@
        include('header.html');
     ?>
     <div id="pageLabel">
-      Welcome!
+      Home
     </div>
     <div id="info">
       <div id="landingPage">

@@ -22,14 +22,16 @@ include('config.php');
         margin: 0;
         padding: 0;
         background-color: grey;
+        font-family: arial;
       }
       #pageLabel{
-        background-color: orange;
+        background-color: #FE7F27;
         height: 50px;
-        text-align: center;
+        text-align: right;
         font-size: 30pt;
         font-weight: bold;
         color: white;
+        font-family: arial;
       }
       #searchInfo{
         display: grid;
@@ -44,10 +46,46 @@ include('config.php');
       #workSection{
         grid-row: 1;
         grid-column: 2;
-        background-color: #cdcdcd;
+        background-color: #b3b3b3;
+      }
+      #fieldtable{
+        width: 100%;
       }
       .templateselect{
         width: 100%;
+      }
+      .searchFields{
+        width: 95%;
+      }
+      .noRes{
+        width: 100%;
+        text-align: center;
+        background-color: #ff4d4d;
+        color: white;
+        font-size: 26pt;
+      }
+      .resultTable{
+        width: 100%;
+        padding: 0px;
+        border-collapse: collapse;
+      }
+      .resultTable th{
+        background-color: #002c64;
+        color: white;
+        height: 40px;
+        font-size: 12pt;
+        font-family: arial;
+      }
+      .resultTable td{
+        height: 40px;
+        font-size: 12pt;
+        font-family: arial;
+      }
+      .resultTable tr:nth-child(even) {
+        background: #dcdee6;
+      }
+      .resultTable tr:nth-child(odd) {
+        background: #fff;
       }
 
 
@@ -55,8 +93,11 @@ include('config.php');
     </style>
     <script src="resources/jquery-3.2.1.min.js"></script>
     <script>
+    //set global template num
+    gTempNum = 0;
     //Make an AJAX call to the database processing file to pull back the search keys to run
     function searchfieldupdate(templatenum){
+      gTempNum = templatenum;
       $.ajax({url: 'database.php',
         data: {'action': 'getSearchFields', 'templatenum': templatenum},
         type: 'POST',
@@ -68,6 +109,78 @@ include('config.php');
 
       })
     }
+
+    //run search function
+    function executeSearch(){
+      //loop search fields
+      querySearchValues = [];
+      $('.searchFields').each(function(){
+        currentVal = $(this).val();
+        currentIndex = $(this).attr("id");
+        if(currentVal != ""){
+          searchValues = [];
+          searchValues.push(currentIndex);
+          searchValues.push(currentVal);
+          querySearchValues.push(searchValues);
+        }
+      })
+
+      if(typeof querySearchValues[0] == 'undefined'){
+        alert("Please enter search values.");
+        }else{
+
+
+        //ajax call, pass templatenum and field data for search query
+        $.ajax({
+            url: 'searchDB.php',
+            data: {'templatenum': gTempNum, 'querySearchValues': querySearchValues},
+            type: 'POST',
+            dataType: 'text',
+            success: function(data){
+              if(data == '"No Records Found"'){
+                //no record update
+                $('#workSection').html("<br><div class='noRes'>No Records Found</div>");
+              }else{
+                //Table create from result set
+                var tempArray = JSON.parse(data);
+                manageResults(tempArray);
+              }
+
+            },
+            error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
+          });
+        //on success call manageResults();
+      }
+    }
+
+    function manageResults(results){
+      //get results passed from php and create table
+      resultHTML = '<table class="resultTable">';
+      resultHTML += '<tr><th>Results Returned</th><th style="width: 100px;"></th></tr>';
+      for(i = 0; i < results.length; i++){
+        resultHTML += '<tr>';
+        resultHTML += '<td>'+results[i][1]+'</td><td style="text-align: center;"><input type="button" value="Open" id="'+results[i][0]+'" onclick="openRecord(this.id);"></td>';
+        resultHTML += '</tr>';
+      }
+
+      resultHTML += '</table>';
+      $('#workSection').html(resultHTML);
+      console.log("manage Results list");
+      console.log(results);
+
+      //create table
+      //if no results, display so
+
+      //if results, iterate through to form table
+      //display name | record link | delete????
+    }
+
+    function openRecord(id){
+      window.open('openRecord.php?rec='+id, 'Display Name');
+      //alert(id);
+    }
+
+
     </script>
   </head>
   <body>
@@ -98,13 +211,6 @@ include('config.php');
         </table>
       </div>
       <div id="workSection">
-        <table>
-          <tr>
-            <th>
-              results
-            </th>
-          </tr>
-        </table>
       </div>
     </div>
 

@@ -17,7 +17,7 @@ if (isset($_POST['data'])) {
     for ($i = 0; $i < count($dataArr); ++$i){
       $sqlstmt .= "f".$dataArr[$i][0]." VARCHAR(200) NULL, ";
     }
-    $sqlstmt .= "PRIMARY KEY (recordnum));";
+    $sqlstmt .= "PRIMARY KEY (recordnum)) AUTO_INCREMENT = 101;";
     $sql = $db->prepare($sqlstmt);
     $sql->setFetchMode(PDO::FETCH_ASSOC);
     $sql->execute();
@@ -54,8 +54,6 @@ if (isset($_POST['data'])) {
     $sql2->bindParam(':search', $dataArr[$i][4]);
     $sql2->setFetchMode(PDO::FETCH_ASSOC);
     $sql2->execute();
-
-
   }
 
 

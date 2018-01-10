@@ -390,11 +390,12 @@ include('config.php');
         margin: 0;
         padding: 0;
         background-color: grey;
+        font-family: arial;
       }
       #pageLabel{
         background-color: red;
         height: 50px;
-        text-align: center;
+        text-align: right;
         font-size: 30pt;
         font-weight: bold;
         color: white;
@@ -480,7 +481,7 @@ include('config.php');
         <br>
         File upload location:
         <br>
-        <input type="text" id="fileUpload"/>
+        <input type="text" style="width: 100%;" id="fileUpload"/>
         <br>
         <input type="button" value="Update Location" id="updateLocBtn" onclick="updateFileLocation();"/>
 

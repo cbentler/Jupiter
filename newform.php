@@ -53,7 +53,7 @@ include('config.php');
           console.log(submitNum);
 
           //all form html
-          var fullhtml = '<form action="submitNewFormDB.php" method="post" enctype="multipart/form-data"><input type="submit" class="saveBtn" value="Save"/><input type="text" name="submitNum" id="submitNum"/>';
+          var fullhtml = '<form action="submitNewFormDB.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()"><input type="submit" class="saveBtn" value="Save"/><input type="text" name="submitNum" id="submitNum"/>';
           fullhtml += '<div id="tabs"><ul><li><a href="#infoTab">Info</a></li><li><a href="#notesTab">Notes</a></li><li><a href="#uploadTab">Documents</a></li></ul>'
           //info tab
           var recordhtml = '<div id="infoTab">';
@@ -94,7 +94,7 @@ include('config.php');
           noteshtml += '</div>';
 
           //upload Tab
-          uploadhtml += 'Enter File Description: <input type="text" name="description" id="description"/> <br><input type="file" name="file" id="file"/>';
+          uploadhtml += '<div id="newUpload">Upload only available after the record has been submitted.<br>Please enter data on the Info tab and click the SAVE button.<br>To add documents, click SEARCH and retreive the desired record.</div>';
           //close tab
           uploadhtml += '</div>';
 
@@ -125,7 +125,7 @@ include('config.php');
             html += '<input type="text" id="hiddenFieldnum_'+cellNum+'" value="'+cellNum+'" class="db" hidden/>';
             html += '<p class="label">'+label+'</p>';
             //html += '<input type="text" id="label_'+cellNum+'" class="label" value="'+label+'"><br>';
-            html += '<input class="formInput" type="'+type+'" name="input_f'+cellNum+'" id="input_f'+cellNum+'" />';
+            html += '<input class="formInput" type="'+type+'" name="f'+cellNum+'" id="f'+cellNum+'" />';
             html += '<br><input type="text" id="hiddenID" value="'+cell+'" class="db" hidden/>';
             $("#"+cell).html(html);
 
@@ -138,9 +138,49 @@ include('config.php');
           $(document).ready(function () {
 
             $("#tabs").tabs();
+            if($.urlParam('save') == "true"){
+              //alert("Your form was submitted successfully.");
+            }
 
           });
         }
+
+        function validateForm(){
+          submit = false;
+          $('.formInput').each(function(){
+            if($(this).val() != ""){
+              submit = true;
+              console.log($(this).val());
+            }
+          })
+          if(submit == false){
+            alert("To save the record, please input at least one value on the Info tab.");
+            console.log("No fields filled in.");
+          }
+          //console.log("the return is: "+submit);
+          return submit;
+
+        }
+
+        $.urlParam = function(name){
+          var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+          if (results==null){
+            return null;
+          }
+          else{
+            return decodeURI(results[1]) || 0;
+          }
+        }
+
+        //prevent enter from submitting the forms
+        $(document).ready(function() {
+          $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+              event.preventDefault();
+              return false;
+              }
+            });
+          });
 
     </script>
     <link rel="stylesheet" type="text/css" href="headerCss.css">
@@ -150,6 +190,7 @@ include('config.php');
         margin: 0;
         padding: 0;
         background-color: grey;
+        font-family: arial;
       }
       #info{
         display: grid;
@@ -166,16 +207,24 @@ include('config.php');
         margin: 10px;
       }
       #pageLabel{
-        background-color: purple;
+        background-color: #256838;
         /*green*/
         height: 50px;
-        text-align: center;
+        text-align: right;
         font-size: 30pt;
         font-weight: bold;
         color: white;
       }
       #workSection{
         background-color: #ccc;
+      }
+      #newUpload{
+        width: 100%;
+        background-color: #ff4d4d;
+        border-radius: 5px;
+        color: white;
+        padding:10px;
+        text-align: center;
       }
       .templateselect{
         width: 100%;
