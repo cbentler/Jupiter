@@ -36,7 +36,7 @@ include('config.php');
             dataType: 'text',
             success: function(data){
               var tempArray = JSON.parse(data);
-              console.log(tempArray);
+              //console.log(tempArray);
               recallNewRecord(tempArray);
             },
             error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }

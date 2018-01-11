@@ -159,7 +159,7 @@ include('config.php');
       resultHTML += '<tr><th>Results Returned</th><th style="width: 100px;"></th></tr>';
       for(i = 0; i < results.length; i++){
         resultHTML += '<tr>';
-        resultHTML += '<td>'+results[i][1]+'</td><td style="text-align: center;"><input type="button" value="Open" id="'+results[i][0]+'" onclick="openRecord(this.id);"></td>';
+        resultHTML += '<td id="disp_'+results[i][0]+'">'+results[i][1]+'</td><td style="text-align: center;"><input type="button" value="Open" id="'+results[i][0]+'" onclick="openRecord(this.id);"></td>';
         resultHTML += '</tr>';
       }
 
@@ -168,16 +168,11 @@ include('config.php');
       console.log("manage Results list");
       console.log(results);
 
-      //create table
-      //if no results, display so
-
-      //if results, iterate through to form table
-      //display name | record link | delete????
     }
 
     function openRecord(id){
-      window.open('openRecord.php?rec='+id, 'Display Name');
-      //alert(id);
+      subDisplayName = $('#disp_'+id).html();
+      window.open('openRecord.php?rec='+id+'&dis='+subDisplayName+'&tem='+gTempNum, "RecordWindow"+gTempNum+id, "menubar=no,location=no,height=800,width=1050");//, "menubar=no,location=no,height=800,width=1050"
     }
 
 
@@ -211,6 +206,8 @@ include('config.php');
         </table>
       </div>
       <div id="workSection">
+      </div>
+      <div id="inset_form">
       </div>
     </div>
 

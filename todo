@@ -1,0 +1,24 @@
+TODO:
+
+1. fix enter button on note field (submit and retreive)
+2. Save function for existing forms
+3. Create help documents
+4. Document upload function
+5. Retrieve / populate upload document tab
+6. figure out how to make form open more secure?????
+
+
+
+Optional:
+1. Icons for title bar
+2. FAVICON
+3. success toast on save and submit
+4. fuzzy search
+5. record delete
+6. upload delete
+7. data type in db (date at least)
+8. "Add to Display name" button for admin page
+9. open reload record??? (yes) modify the open function to check if a window already exists to prevent resetting progress
+10. Save vs. save and close buttons
+11. Cosmetics
+12. remove display name from add new
