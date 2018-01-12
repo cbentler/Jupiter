@@ -30,7 +30,7 @@ function getSearchFields($templatenum){
   $sql->execute();
   $searchfieldtable = '';
   while ($row = $sql->fetch()) {
-    $searchfieldtable .= '<tr><td>'.$row["name"].'</td></tr> <tr><td> <input class="searchFields" type="'.$row["type"].'" id="f'.$row["id"].'"> </td></tr>';
+    $searchfieldtable .= '<tr><td>'.$row["name"].'</td></tr> <tr><td> <input class="searchFields" onKeyDown="if(event.keyCode==13) executeSearch();" type="'.$row["type"].'" id="f'.$row["id"].'"> </td></tr>';
   }
   $searchfieldtable .= '<tr><td><br><input type="button" value="Search" onclick="executeSearch()"></td></tr>';
   echo ($searchfieldtable);

@@ -53,7 +53,7 @@ include('config.php');
           console.log(submitNum);
 
           //all form html
-          var fullhtml = '<form action="submitNewFormDB.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()"><input type="submit" class="saveBtn" value="Save"/><input type="text" name="submitNum" id="submitNum"/>';
+          var fullhtml = '<form action="submitNewFormDB.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()"><input type="submit" class="saveBtn"  value="Save"/><input type="text" hidden name="submitNum" id="submitNum"/>';
           fullhtml += '<div id="tabs"><ul><li><a href="#infoTab">Info</a></li><li><a href="#notesTab">Notes</a></li><li><a href="#uploadTab">Documents</a></li></ul>'
           //info tab
           var recordhtml = '<div id="infoTab">';
@@ -175,7 +175,7 @@ include('config.php');
         //prevent enter from submitting the forms
         $(document).ready(function() {
           $(window).keydown(function(event){
-            if(event.keyCode == 13) {
+            if(event.keyCode == 13 && ($(event.target)[0]!=$("textarea")[0])) {
               event.preventDefault();
               return false;
               }

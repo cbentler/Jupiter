@@ -47,6 +47,7 @@ include('config.php');
         grid-row: 1;
         grid-column: 2;
         background-color: #b3b3b3;
+        overflow-y: auto;
       }
       #fieldtable{
         width: 100%;
@@ -74,7 +75,7 @@ include('config.php');
         color: white;
         height: 40px;
         font-size: 12pt;
-        font-family: arial;
+
       }
       .resultTable td{
         height: 40px;
@@ -174,6 +175,10 @@ include('config.php');
       subDisplayName = $('#disp_'+id).html();
       window.open('openRecord.php?rec='+id+'&dis='+subDisplayName+'&tem='+gTempNum, "RecordWindow"+gTempNum+id, "menubar=no,location=no,height=800,width=1050");//, "menubar=no,location=no,height=800,width=1050"
     }
+
+    $(document).ready(function () {
+
+    });
 
 
     </script>

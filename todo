@@ -1,11 +1,32 @@
 TODO:
 
 1. fix enter button on note field (submit and retreive)
+  -update enter function to allow keypress but not submit form
+1.5. Added search on enter
+
 2. Save function for existing forms
+  -collect info saved in fields
+  -pass that to php
+  -run update statement on tables
+  -include notes
+
 3. Create help documents
+  -low priority
+
 4. Document upload function
+  high priority after save function is done
+
 5. Retrieve / populate upload document tab
+  -hand in hand with #4
+  
 6. figure out how to make form open more secure?????
+7. Login page for admin
+  -Set pw in sysconfig table
+  -secondary user (admin and master)
+  -create new login page
+  -logout buttons
+  -re-route to insufficent access page
+  -set admin password function
 
 
 

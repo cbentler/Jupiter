@@ -9,6 +9,7 @@
     templatenum = '';
     displayName = '';
     recordnum = '';
+    newDocNum = 1;
 
 
     //on loading
@@ -16,17 +17,20 @@
       $(document).ready(function () {
         //prepare doc
         $(window).keydown(function(event){
-          if(event.keyCode == 13) {
+          if(event.keyCode == 13 && ($(event.target)[0]!=$("textarea")[0])) {
             event.preventDefault();
             return false;
             }
           });
+
+
         $("#tabs").tabs();
         //prepare table
         templatenum = parseURL('tem');
         displayName = parseURL('dis');
         recordnum = parseURL('rec');
         fieldCall();
+        getDocs();
 
       });
     }
@@ -70,7 +74,7 @@
       //sets template num for this form to be submitted
 
       //all form html
-      var fullhtml = '<form action="saveFormDB.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()"><input type="submit" class="saveBtn" value="Save" onclick="saveFunction()"/>';
+      var fullhtml = '<input type="submit" class="saveBtn" value="Save" />';//onclick="saveFunction()"
       fullhtml += '<div id="tabs"><ul><li><a href="#infoTab">Info</a></li><li><a href="#notesTab">Notes</a></li><li><a href="#uploadTab">Documents</a></li></ul>'
       //info tab
       var recordhtml = '<div id="infoTab">';
@@ -111,7 +115,24 @@
       noteshtml += '</div>';
 
       //upload Tab
-      uploadhtml += '<div id="newUpload">Upload only available after the record has been submitted.<br>Please enter data on the Info tab and click the SAVE button.<br>To add documents, click SEARCH and retreive the desired record.</div>';
+      uploadhtml += '<div id="uploadWork"></div>';
+
+      //set newUploadTable
+      uploadhtml += '<table class="newUploadTable"><tr><th style="width: 40%;">New Uploads</th><th style="width: 40%;"></th><th style="width: 10%;"><input type="button" value="Add New" id="addNewRow" onclick="newDocSetup()"/></th></tr>';
+      uploadhtml += '<tr id="row_1"><td>Document Description:<br><input type="text" id="des_1"></td><td><br><input type="file" id="file_1"/></td><td><input type="button" value="X" id="remove_1" class="newRowRemovebtn" onclick="removeNewRow(this.id)"/></td></tr></table>';
+
+
+      //close uploadTable
+      //uploadhtml += '</table>';
+
+      uploadhtml += '<br><br><br>';
+
+      //set uploadTable
+      uploadhtml += '<table class="uploadTable"><tr><th>Attached Docs</th><th></th></tr></table>';
+
+      //close uploadTable
+      //uploadhtml += '</table>';
+
       //close tab
       uploadhtml += '</div>';
 
@@ -184,7 +205,6 @@
           type: 'POST',
           dataType: 'text',
           success: function(data){
-            console.log(data);
             //populate notes with vals from db
             $('#notearea').html(data);
           },
@@ -192,9 +212,99 @@
         });
     }
 
+    function newDocSetup(){
+      //adds a row to the New Uploads table with description and file select.
+      newDocNum++;
+      newRowHtml = '';
+      newRowHtml = '<tr id="row_'+newDocNum+'"><td>Document Description:<br><input type="text" id="des_'+newDocNum+'"></td><td><br><input type="file" id="file_'+newDocNum+'"/></td><td><input type="button" value="X" class="newRowRemovebtn" id="remove_'+newDocNum+'" onclick="removeNewRow(this.id)"/></td></tr>';
+      $('.newUploadTable').append(newRowHtml);
+    }
+
+    function removeNewRow(delId){
+      //removes row in case of mistakenly added
+      console.log(delId);
+      var num = delId.replace('remove_','');
+      var rowNum = 'row_'+num;
+      console.log(rowNum);
+
+      $('#'+rowNum).remove();
+    }
+
+    //gets document references from db and populates Attached docs table
+    function getDocs(){
+      $.ajax({
+          url: 'getDocsDB.php',
+          data: {'recordnum': recordnum},
+          type: 'POST',
+          dataType: 'text',
+          success: function(data){
+            try{
+              var tempArray = JSON.parse(data);
+              console.log(tempArray);
+            }
+            catch(ex){
+              $('.uploadTable').html("There was an issue loading this record's documents.  Please close this window and try to realod from search list.");
+            }
+            //populate docs table
+            var docHtml = '';
+            for(i = 0; i < tempArray.length; i++){
+              docHtml += '<tr><td>'+tempArray[i][0]+'</td><td><input type="button" value="open" id="'+tempArray[i][1]+'"onclick="openDoc(this.id)"></td></tr>';
+              console.log(docHtml);
+            }
+            if(docHtml != ''){
+              $('.uploadTable').append(docHtml);
+            }else{
+              $('.uploadTable').append('<tr><td colspan="3">No Documents Found</td></tr>');
+            }
+
+          },
+          error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
+        });
+    }
+
+    function openDoc(id){
+      window.open("/fileServer/test2.png");
+      /*
+      $.ajax({
+          url: 'openDocDB.php',
+          data: {'uploadnum': id},
+          type: 'POST',
+          dataType: 'text',
+          success: function(data){
+            try{
+              console.log(data);
+              window.open(data);
+            }
+            catch(ex){
+              alert("Could not open document selected.");
+            }
+
+          },
+          error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
+        });
+        */
+    }
+
     //save function
-    function saveFunction(){
-      window.close();
+    //function saveFunction(){
+      //window.close();
+    //}
+
+    function validateForm(){
+      submit = false;
+      $('.formInput').each(function(){
+        if($(this).val() != ""){
+          submit = true;
+          console.log($(this).val());
+        }
+      })
+      if(submit == false){
+        alert("To save the record, please input at least one value on the Info tab.");
+        console.log("No fields filled in.");
+      }
+      //console.log("the return is: "+submit);
+      return submit;
+
     }
 
     </script>
@@ -248,12 +358,53 @@
       height: 70px;
       background-color: #ccc;
     }
+    .uploadWork{
+      text-align: center;
+    }
+    .uploadTable{
+      width: 95%;
+      border-collapse: collapse;
+    }
+    .uploadTable th{
+      background-color: #002C64;
+      color: white;
+      text-align: left;
+    }
+    .uploadTable tr:nth-child(even) {
+      background: #dcdee6;
+    }
+    .uploadTable tr:nth-child(odd) {
+      background: #fff;
+    }
+
+    .newUploadTable{
+      width: 95%;
+      border-collapse: collapse;
+    }
+    .newUploadTable th{
+      background-color: #256838;
+      color: white;
+      text-align: left;
+      width: 50%;
+    }
+    .newUploadTable tr:nth-child(even) {
+      background: #ccc;
+    }
+    .newUploadTable tr:nth-child(odd) {
+      background: #c0ccc1;
+    }
+    .newRowRemovebtn{
+      background-color: red;
+      color: white;
+      border-radius: 5px;
+    }
+
     </style>
   </head>
   <body onload="onLoad()">
-    <form action="submitNewFormDB.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
-      <input type="text" name="recordnum"  id="recordnum"/>
-      <input type="text" name="templatenum"  id="templatenum"/>
+    <form action="saveFormDB.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+      <input type="text" name="recordnum" hidden id="recordnum"/>
+      <input type="text" name="templatenum" hidden id="templatenum"/>
       <div id="workSection">
 
       </div><!--end workSection-->

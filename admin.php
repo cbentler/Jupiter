@@ -242,6 +242,8 @@ include('config.php');
           dataType: 'text',
           success: function(data){
             $("#fileUpload").val(data);
+            console.log("Check File Location: "+data);
+            console.log("Actual Val: "+$("#fileUpload").val());
           },
           error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
 
@@ -379,9 +381,13 @@ include('config.php');
         fieldnum = tableData[1];
       }
 
+      $(document).ready(function() {
+        //run on load
+        checkFileLocation();
+      });
 
-      //run on load
-      checkFileLocation();
+
+
 
     </script>
     <style>
@@ -459,7 +465,7 @@ include('config.php');
        include('header.html');
     ?>
     <div id="pageLabel">
-      Configuration Administration
+      Configuration Administration 
     </div>
     <div id="searchInfo">
       <div id="searchNav">
