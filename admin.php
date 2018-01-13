@@ -219,10 +219,12 @@ include('config.php');
       //updates the file share location in the database for the upload function
       function updateFileLocation(){
         var loc = $("#fileUpload").val();
-        if(window.confirm("Are you sure you want to update the fileserver location to: "+loc+"")){
+        var target = $("#fileUploadTarget").val();
+        if(window.confirm("Are you sure you want to update the fileserver location to: "+loc+" and target location to: "+target+"")){
         $.ajax({url: 'sysConfig.php',
           data: {'action': 'updateFileLocation',
-          'data': loc},
+          'data': loc,
+          'target': target},
           type: 'POST',
           dataType: 'text',
           success: function(data){
@@ -241,7 +243,9 @@ include('config.php');
           type: 'POST',
           dataType: 'text',
           success: function(data){
-            $("#fileUpload").val(data);
+            var array = JSON.parse(data)
+            $("#fileUpload").val(array[0]);
+            $("#fileUploadTarget").val(array[1]);
             console.log("Check File Location: "+data);
             console.log("Actual Val: "+$("#fileUpload").val());
           },
@@ -465,7 +469,7 @@ include('config.php');
        include('header.html');
     ?>
     <div id="pageLabel">
-      Configuration Administration 
+      Configuration Administration
     </div>
     <div id="searchInfo">
       <div id="searchNav">
@@ -485,9 +489,13 @@ include('config.php');
         <br>
         -----------------------------------------
         <br>
-        File upload location:
+        File upload location (Alias):
         <br>
         <input type="text" style="width: 100%;" id="fileUpload"/>
+        <br>
+        File Target Directory:
+        <br>
+        <input type="text" style="width: 100%;" id="fileUploadTarget"/>
         <br>
         <input type="button" value="Update Location" id="updateLocBtn" onclick="updateFileLocation();"/>
 

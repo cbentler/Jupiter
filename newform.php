@@ -66,7 +66,7 @@ include('config.php');
 
           //create shell
           recordhtml += '<table class="recordtable">';
-          recordhtml += '<tr><th colspan="3">'+tableData[2]+'</th></tr>';
+          recordhtml += '<tr><th colspan="3">'+tableData[3]+'</th></tr>';
           //recall Table
           if(tableData[4] < 3){
             tableRowCount = 3;

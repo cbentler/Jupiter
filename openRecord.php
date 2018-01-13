@@ -30,9 +30,10 @@
         displayName = parseURL('dis');
         recordnum = parseURL('rec');
         fieldCall();
-        getDocs();
+
 
       });
+      getDocs();
     }
 
     //parse url
@@ -119,7 +120,7 @@
 
       //set newUploadTable
       uploadhtml += '<table class="newUploadTable"><tr><th style="width: 40%;">New Uploads</th><th style="width: 40%;"></th><th style="width: 10%;"><input type="button" value="Add New" id="addNewRow" onclick="newDocSetup()"/></th></tr>';
-      uploadhtml += '<tr id="row_1"><td>Document Description:<br><input type="text" id="des_1"></td><td><br><input type="file" id="file_1"/></td><td><input type="button" value="X" id="remove_1" class="newRowRemovebtn" onclick="removeNewRow(this.id)"/></td></tr></table>';
+      uploadhtml += '<tr id="row_1"><td>Document Description:<br><input type="text" name="des_1" id="des_1"></td><td><br><input type="file" name="file_1" id="file_1"/></td><td><input type="button" value="X" id="remove_1" class="newRowRemovebtn" onclick="removeNewRow(this.id)"/></td></tr></table>';
 
 
       //close uploadTable
@@ -215,8 +216,9 @@
     function newDocSetup(){
       //adds a row to the New Uploads table with description and file select.
       newDocNum++;
+      $('#newDocNum').val(newDocNum);
       newRowHtml = '';
-      newRowHtml = '<tr id="row_'+newDocNum+'"><td>Document Description:<br><input type="text" id="des_'+newDocNum+'"></td><td><br><input type="file" id="file_'+newDocNum+'"/></td><td><input type="button" value="X" class="newRowRemovebtn" id="remove_'+newDocNum+'" onclick="removeNewRow(this.id)"/></td></tr>';
+      newRowHtml = '<tr id="row_'+newDocNum+'"><td>Document Description:<br><input type="text" name="des_'+newDocNum+'" id="des_'+newDocNum+'"></td><td><br><input type="file" name="file_'+newDocNum+'" id="file_'+newDocNum+'"/></td><td><input type="button" value="X" class="newRowRemovebtn" id="remove_'+newDocNum+'" onclick="removeNewRow(this.id)"/></td></tr>';
       $('.newUploadTable').append(newRowHtml);
     }
 
@@ -263,8 +265,7 @@
     }
 
     function openDoc(id){
-      window.open("/fileServer/test2.png");
-      /*
+      //window.open("/fileServer/test2.png");
       $.ajax({
           url: 'openDocDB.php',
           data: {'uploadnum': id},
@@ -273,7 +274,7 @@
           success: function(data){
             try{
               console.log(data);
-              window.open(data);
+              window.open(data, "FileWindow"+id, "menubar=no,location=no,height=800,width=1050");
             }
             catch(ex){
               alert("Could not open document selected.");
@@ -282,7 +283,6 @@
           },
           error:function (xhr,textStatus,errorThrown) { alert(textStatus+':'+errorThrown); }
         });
-        */
     }
 
     //save function
@@ -370,6 +370,11 @@
       color: white;
       text-align: left;
     }
+    .uploadTable td{
+      height: 40px;
+      font-size: 12pt;
+      font-family: arial;
+    }
     .uploadTable tr:nth-child(even) {
       background: #dcdee6;
     }
@@ -386,6 +391,11 @@
       color: white;
       text-align: left;
       width: 50%;
+    }
+    .newUploadTable td{
+      height: 40px;
+      font-size: 12pt;
+      font-family: arial;
     }
     .newUploadTable tr:nth-child(even) {
       background: #ccc;
@@ -405,6 +415,7 @@
     <form action="saveFormDB.php" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
       <input type="text" name="recordnum" hidden id="recordnum"/>
       <input type="text" name="templatenum" hidden id="templatenum"/>
+      <input type="text" name="newDocNum" hidden value="1" id="newDocNum"/>
       <div id="workSection">
 
       </div><!--end workSection-->

@@ -26,24 +26,7 @@ if (isset($_POST['uploadnum'])) {
     $row = $sql2->fetch();
     $docName = $row['path'];
 
-    $link = "file://".$configLocation.$docName;
-
-    $file = basename(urldecode($_GET['file']));
-    $fileDir = '/path/to/files/';
-
-    if (file_exists($configLocation . $docName))
-    {
-        // Note: You should probably do some more checks
-        // on the filetype, size, etc.
-        $contents = file_get_contents($configLocation . $docName);
-
-        // Note: You should probably implement some kind
-        // of check on filetype
-        header('Content-type: image/jpeg');
-
-        //echo $contents;
-    }
-
+    $link = $configLocation.$docName;
 
     $return = true;
   }
@@ -61,7 +44,7 @@ if (isset($_POST['uploadnum'])) {
 
 if($return){
   //echo($link);
-  echo($contents);
+  echo($link);
 }else{
   if($test){
   }else{
