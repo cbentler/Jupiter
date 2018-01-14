@@ -1,0 +1,12 @@
+<a><b>Welcome to Jupiter Data Management System!</b><br>  This is a database that you can use to store and retrieve information and Documents
+related to that information.  Here's a quick guide to get you started.<br><br>
+<div style="text-align: left;">
+
+  <b>Search:</b> Use search to find records in the system.  Select a template and enter any information you know about the
+  record you are looking for.  Records that match the search parameters will be displayed to be opened.  Note: Only
+  records that match the search fields exactly will be shown.<br><br>
+  <b>New Record:</b> Use New Record to add new information to the system.  Once saved, the record will be searchable in the <b>SEARCH</b>
+  menu.<br><br>
+  <b>Help:</b> If you need more information about a function that is in the system, use the <b>HELP</b> menu.  This is a reference guide
+  for all activities in Jupiter.</a>
+</div>

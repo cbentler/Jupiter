@@ -119,8 +119,8 @@
       uploadhtml += '<div id="uploadWork"></div>';
 
       //set newUploadTable
-      uploadhtml += '<table class="newUploadTable"><tr><th style="width: 40%;">New Uploads</th><th style="width: 40%;"></th><th style="width: 10%;"><input type="button" value="Add New" id="addNewRow" onclick="newDocSetup()"/></th></tr>';
-      uploadhtml += '<tr id="row_1"><td>Document Description:<br><input type="text" name="des_1" id="des_1"></td><td><br><input type="file" name="file_1" id="file_1"/></td><td><input type="button" value="X" id="remove_1" class="newRowRemovebtn" onclick="removeNewRow(this.id)"/></td></tr></table>';
+      uploadhtml += '<table class="newUploadTable"><tr><th style="width: 40%;">New Uploads</th><th style="width: 40%;"></th><th style="width: 10%;"><input type="button" value="Add New" hidden id="addNewRow" onclick="newDocSetup()"/></th></tr>';
+      uploadhtml += '<tr id="row_1"><td>Document Description:<br><input type="text" name="des_1" id="des_1"></td><td><br><input type="file" name="file_1" id="file_1"/></td><td><input type="button" hidden value="X" id="remove_1" class="newRowRemovebtn" onclick="removeNewRow(this.id)"/></td></tr></table>';
 
 
       //close uploadTable
@@ -129,7 +129,7 @@
       uploadhtml += '<br><br><br>';
 
       //set uploadTable
-      uploadhtml += '<table class="uploadTable"><tr><th>Attached Docs</th><th></th></tr></table>';
+      uploadhtml += '<table class="uploadTable"><tr><th>Attached Docs</th><th style="text-align: right;""><input name="uploadRefresh" id="uploadRefresh" type="button" value="Refresh" onclick="getDocs()"/></th></tr></table>';
 
       //close uploadTable
       //uploadhtml += '</table>';
@@ -248,15 +248,15 @@
               $('.uploadTable').html("There was an issue loading this record's documents.  Please close this window and try to realod from search list.");
             }
             //populate docs table
-            var docHtml = '';
+            var docHtml = '<tr><th>Attached Docs</th><th style="text-align: right;"><input name="uploadRefresh" id="uploadRefresh" type="button" value="Refresh" onclick="getDocs()"/></th></tr>';
             for(i = 0; i < tempArray.length; i++){
               docHtml += '<tr><td>'+tempArray[i][0]+'</td><td><input type="button" value="open" id="'+tempArray[i][1]+'"onclick="openDoc(this.id)"></td></tr>';
               console.log(docHtml);
             }
             if(docHtml != ''){
-              $('.uploadTable').append(docHtml);
+              $('.uploadTable').html(docHtml);
             }else{
-              $('.uploadTable').append('<tr><td colspan="3">No Documents Found</td></tr>');
+              $('.uploadTable').html('<tr><td colspan="3">No Documents Found</td></tr>');
             }
 
           },

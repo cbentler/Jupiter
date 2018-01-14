@@ -42,7 +42,9 @@
     </div>
     <div id="info">
       <div id="landingPage">
-        <a><b>Pro Tip:</b>HELP!</a>
+        <?php
+           include('helpText.html');
+        ?>
       </div>
     </div>
 

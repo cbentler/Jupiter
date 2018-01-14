@@ -83,6 +83,10 @@ if (isset($_POST['recordnum'], $_POST['templatenum'])) {
             if(isset($_FILES['file_'.$newDocNum]['name'])){
               //validate MIME type to verify upload is approved.
               $tempName = $_FILES['file_'.$newDocNum]['tmp_name'];
+
+              $fileinfo = finfo_open( FILEINFO_MIME_TYPE );
+              $mime = finfo_file( $fileinfo, $tempName );
+              finfo_close( $fileinfo );
               if(check_doc_mime($tempName)){
                 //set new filename
                 $date = gmdate(U);
@@ -128,24 +132,25 @@ if (isset($_POST['recordnum'], $_POST['templatenum'])) {
 
 //$return = false;
 if($return){
-  //echo '<script type="text/javascript">window.close();</script>';
-  echo("reason:".$reason);
+  echo '<script type="text/javascript">window.close();</script>';
+  //echo("reason:".$reason);
   //echo("Type: ".$tempName);
   //echo $target_dir;
-  echo ("NewDocNum: ".$newDocNum);
-  var_dump($_FILES);
+  //echo ("NewDocNum: ".$newDocNum);
+  //var_dump($_FILES);
   //echo $target_dir.$name;
   //$user = posix_getpwuid(posix_geteuid());
   //var_dump($user);
   //echo $_SERVER['DOCUMENT_ROOT'];
   //$path = $target_dir;
 
-echo "Path : $path";
+  //echo "Path : $path";
 
-require "$path";
+  //require "$path";
 }else{
   if($test){
       var_dump($testArr);
+
     //var_dump($_POST);
     //var_dump($data);
     //echo($queryTrim);
@@ -156,28 +161,34 @@ require "$path";
     //var_dump($metatst);
   }else{
   echo("There was an error saving the record.  Please close this window and re-open from the search page.");
-  //echo("Error: ".$reason);
+  echo(" Error: ".$reason);
+  echo($templatenum);
+  echo($recordnum);
+
+  echo($mime);
 }
 }
 
-function check_doc_mime( $tmpname ) {
+function check_doc_mime( $tempName ) {
     // MIME types: http://filext.com/faq/office_mime_types.php
     $finfo = finfo_open( FILEINFO_MIME_TYPE );
-    $mtype = finfo_file( $finfo, $tmpname );
+    $mtype = finfo_file( $finfo, $tempName );
     finfo_close( $finfo );
     if(
-        $mtype == ( "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ) ||
-        $mtype == ( "application/vnd.ms-excel" ) ||
-        $mtype == ( "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ) ||
-        $mtype == ( "application/msword" ) ||
-        $mtype == ( "image/png" ) ||
-        $mtype == ( "image/tiff" ) ||
-        $mtype == ( "image/gif" ) ||
-        $mtype == ( "image/jpeg" ) ||
-        $mtype == ( "image/bmp" ) ||
-        $mtype == ( "text/plain" ) ||
-        $mtype == ( "application/rtf" ) ||
-        $mtype == ( "text/csv" ) ||
+        $mtype == ( "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ) || //.docx
+        $mtype == ( "application/vnd.ms-excel" ) || //.xls application/vnd.ms-excel
+        $mtype == ( "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ) || //.xlsx
+        $mtype == ( "application/msword" ) || //.doc
+        $mtype == ( "image/png" ) || //.png
+        $mtype == ( "image/tiff" ) || //.tiff or .tif
+        $mtype == ( "image/gif" ) || //.gif
+        $mtype == ( "image/jpeg" ) || //.jpeg
+        $mtype == ( "image/bmp" ) ||  //.bmp
+        $mtype == ( "text/plain" ) || //txt
+        $mtype == ( "application/rtf" ) || //rtf
+        $mtype == ( "text/csv" ) || //csv
+        $mtype == ( "application/vnd.oasis.opendocument.text" ) ||//libre office document application/vnd.oasis.opendocument.text
+        $mtype == ( "application/vnd.oasis.opendocument.spreadsheet" ) ||//libre office spreadsheet
         $mtype == ( "application/pdf" ) ) {
         return TRUE;
     }

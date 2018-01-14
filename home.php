@@ -44,7 +44,7 @@
     </div>
     <div id="info">
       <div id="landingPage">
-        <a><b>Pro Tip:</b>this is a test of the landing page system</a>
+        <?php include('quickReferenceText.txt'); ?>
       </div>
     </div>
 
