@@ -83,10 +83,6 @@ if (isset($_POST['recordnum'], $_POST['templatenum'])) {
             if(isset($_FILES['file_'.$newDocNum]['name'])){
               //validate MIME type to verify upload is approved.
               $tempName = $_FILES['file_'.$newDocNum]['tmp_name'];
-
-              $fileinfo = finfo_open( FILEINFO_MIME_TYPE );
-              $mime = finfo_file( $fileinfo, $tempName );
-              finfo_close( $fileinfo );
               if(check_doc_mime($tempName)){
                 //set new filename
                 $date = gmdate(U);
