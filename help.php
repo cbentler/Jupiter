@@ -17,7 +17,8 @@
         background-color: white;
         margin: 50px;
         min-height: 200px;
-        text-align: center;
+        padding: 5px;
+        overflow-y: auto;
       }
 
       #pageLabel{

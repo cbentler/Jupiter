@@ -34,18 +34,27 @@ include('config.php');
         font-family: arial;
       }
       #searchInfo{
-        display: grid;
+        /*display: grid;
         grid-template-columns: 250px auto;
-        grid-template-rows: 100vh;
+        grid-template-rows: 100vh;*/
       }
 
       #searchNav{
-        grid-row: 1;
-        grid-column: 1;
+        /*grid-row: 1;
+        grid-column: 1;*/
+      }
+      #searchInfoTable{
+        width: 100%;
+        height: 100%;
+        border-collapse: collapse;
+      }
+      #searchInfoTable td{
+        border: hidden ;
+        vertical-align: top;
       }
       #workSection{
-        grid-row: 1;
-        grid-column: 2;
+        /*grid-row: 1;
+        grid-column: 2;*/
         background-color: #b3b3b3;
         overflow-y: auto;
       }
@@ -191,31 +200,37 @@ include('config.php');
       Search
     </div>
     <div id="searchInfo">
-      <div id="searchNav">
-        <table style="width: 100%;">
-          <tr>
-            <th>
-              Templates
-            </th>
-          </tr>
-              <?php
-              echo($templatelisttable);
-              ?>
-        </table>
-        <br>
-        <div id="middlediv">
-        </div>
-        <br>
+      <table id="searchInfoTable">
+        <tr>
+          <td style="width: 250px;">
+            <div id="searchNav">
+              <table style="width: 100%;">
+                <tr>
+                  <th>
+                    Templates
+                  </th>
+                </tr>
+                    <?php
+                    echo($templatelisttable);
+                    ?>
+              </table>
+              <br>
+              <div id="middlediv">
+              </div>
+              <br>
 
-        <table id="fieldtable">
-        </table>
-      </div>
-      <div id="workSection">
-      </div>
-      <div id="inset_form">
-      </div>
+              <table id="fieldtable">
+              </table>
+            </div>
+          </td>
+          <td style="background-color: #cdcdcd;">
+            <div id="workSection">
+            </div>
+            <div id="inset_form">
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
-
-
   </body>
 </html>

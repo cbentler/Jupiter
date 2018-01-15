@@ -410,18 +410,28 @@ include('config.php');
         font-weight: bold;
         color: white;
       }
+      #searchInfoTable{
+        width: 100%;
+        height: 100%;
+        border-collapse: collapse;
+      }
+      #searchInfoTable td{
+        border: hidden ;
+        vertical-align: top;
+      }
       #searchInfo{
+        /*
         display: grid;
         grid-template-columns: 250px auto;
-        grid-template-rows: 100vh;
+        grid-template-rows: 100vh;*/
       }
       #searchNav{
-        grid-row: 1;
-        grid-column: 1;
+        /*grid-row: 1;
+        grid-column: 1;*/
       }
       #workSection{
-        grid-row: 1;
-        grid-column: 2;
+        /*grid-row: 1;
+        grid-column: 2;*/
         background-color: #cdcdcd;
       }
       .configTable{
@@ -472,38 +482,46 @@ include('config.php');
       Configuration Administration
     </div>
     <div id="searchInfo">
-      <div id="searchNav">
-        Add New Template:<br>
-        <input type="button" value="New" name="newTemplate" onclick="newTemplate();"/>
-        <br>
-        -or-
-        <br>
-        Select an existing template to modify
-        <br>
-        <?php
-        echo($templatelisttable);
-        ?>
-        <br>
-        <input type="button" value="Edit" name="edit" onclick="loadEditTemplate();"/>
-        <br>
-        <br>
-        -----------------------------------------
-        <br>
-        File upload location (Alias):
-        <br>
-        <input type="text" style="width: 100%;" id="fileUpload"/>
-        <br>
-        File Target Directory:
-        <br>
-        <input type="text" style="width: 100%;" id="fileUploadTarget"/>
-        <br>
-        <input type="button" value="Update Location" id="updateLocBtn" onclick="updateFileLocation();"/>
+      <table id="searchInfoTable">
+        <tr>
+          <td style="width: 250px;">
+            <div id="searchNav">
+              Add New Template:<br>
+              <input type="button" value="New" name="newTemplate" onclick="newTemplate();"/>
+              <br>
+              -or-
+              <br>
+              Select an existing template to modify
+              <br>
+              <?php
+              echo($templatelisttable);
+              ?>
+              <br>
+              <input type="button" value="Edit" name="edit" onclick="loadEditTemplate();"/>
+              <br>
+              <br>
+              -----------------------------------------
+              <br>
+              File upload location (Alias):
+              <br>
+              <input type="text" style="width: 100%;" id="fileUpload"/>
+              <br>
+              File Target Directory:
+              <br>
+              <input type="text" style="width: 100%;" id="fileUploadTarget"/>
+              <br>
+              <input type="button" value="Update Location" id="updateLocBtn" onclick="updateFileLocation();"/>
 
-      </div>
-      <div id="workSection">
-        <table class="configTable">
-        </table>
-      </div>
+            </div>
+          </td>
+          <td style="background-color: #cdcdcd;">
+            <div id="workSection">
+              <table class="configTable">
+              </table>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
 
 

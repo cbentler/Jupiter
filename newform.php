@@ -193,14 +193,27 @@ include('config.php');
         font-family: arial;
       }
       #info{
+        /*
         display: grid;
         grid-template-columns: 250px auto;
         grid-template-rows: 100vh;
+        */
       }
       #nav{
+        /*
         grid-row: 1;
         grid-column: 1;
+        */
         background-color: grey;
+      }
+      #searchInfoTable{
+        width: 100%;
+        height: 100%;
+        border-collapse: collapse;
+      }
+      #searchInfoTable td{
+        border: hidden ;
+        vertical-align: top;
       }
       #form{
         background-color: #ccc;
@@ -279,35 +292,40 @@ include('config.php');
         New Record
       </div>
       <div id="info">
-        <div id="nav">
-          <table style="width:100%;">
-            <tr>
-              <th>
-                Templates
-              </th>
-            </tr>
-                <?php
-                  echo($templatelisttable);
-                ?>
-                <tr>
-                  <td>
-                <input type="button" value="New Record" onclick="newRecord();"/>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div id="workSection">
-          <div id="infoTab">
-          </div>
-          <div id="notesTab">
-          </div>
-          <div id="uploadTab">
-          </div>
+        <table id="searchInfoTable" border="0">
+          <tr>
+            <td style="width: 250px;">
+              <div id="nav">
+                <table style="width:100%;">
+                  <tr>
+                    <th>
+                      Templates
+                    </th>
+                  </tr>
+                      <?php
+                        echo($templatelisttable);
+                      ?>
+                      <tr>
+                        <td>
+                      <input type="button" value="New Record" onclick="newRecord();"/>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </td>
 
-
-        </div>
+            <td style="background-color: #cdcdcd;">
+              <div id="workSection">
+                <div id="infoTab">
+                </div>
+                <div id="notesTab">
+                </div>
+                <div id="uploadTab">
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
       </div>
-
-
     </body>
   </html>
