@@ -409,6 +409,7 @@ include('config.php');
         font-size: 30pt;
         font-weight: bold;
         color: white;
+        padding-right: 5px;
       }
       #searchInfoTable{
         width: 100%;

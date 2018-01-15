@@ -32,6 +32,7 @@ include('config.php');
         font-weight: bold;
         color: white;
         font-family: arial;
+        padding-right: 5px;
       }
       #searchInfo{
         /*display: grid;

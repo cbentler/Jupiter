@@ -19,6 +19,7 @@
         margin: 50px;
         min-height: 200px;
         text-align: center;
+        padding: 5px;
       }
       #pageLabel{
         background-color: #595959;
@@ -27,6 +28,7 @@
         font-size: 30pt;
         font-weight: bold;
         color: white;
+        padding-right: 5px;
       }
 
 
